@@ -1,8 +1,8 @@
-const Part = ({ part, exe }) => {
+const Part = (props) => {
   return (
     <div>
       <p>
-        {part} {exe}
+        {props.part} {props.exe}
       </p>
     </div>
   );
