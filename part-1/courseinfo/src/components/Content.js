@@ -4,7 +4,7 @@ const Content = ({ course }) => {
   return (
     <div>
       {course.map((x, i) => (
-        <Part key={i} part={x.part} exe={x.exercises} />
+        <Part key={i} part={x.name} exe={x.exercises} />
       ))}
     </div>
   );
