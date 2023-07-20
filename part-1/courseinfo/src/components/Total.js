@@ -1,7 +1,10 @@
-const Total = ({ exe1, exe2, exe3 }) => {
+const Total = ({ total }) => {
   return (
     <div>
-      <p>Number of exercises {exe1 + exe2 + exe3}</p>
+      <p>
+        Number of exercises{" "}
+        {total.reduce((acc, curVal) => acc + curVal.exercises, 0)}
+      </p>
     </div>
   );
 };

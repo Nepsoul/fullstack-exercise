@@ -15,14 +15,24 @@ function App() {
     <div>
       <Header course={course} />
       <Content
-        part1={part1}
-        exe1={exercises1}
-        part2={part2}
-        exe2={exercises2}
-        part3={part3}
-        exe3={exercises3}
+        course={[
+          {
+            part: part1,
+            exercises: exercises1,
+          },
+
+          { part: part2, exercises: exercises2 },
+
+          { part: part3, exercises: exercises3 },
+        ]}
       />
-      <Total exe1={exercises1} exe2={exercises1} exe3={exercises1} />
+      <Total
+        total={[
+          { exercises: exercises1 },
+          { exercises: exercises2 },
+          { exercises: exercises3 },
+        ]}
+      />
     </div>
   );
 }
