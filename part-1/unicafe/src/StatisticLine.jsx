@@ -1,6 +1,15 @@
 const StatisticsLine=(props)=>{
     return(<div>
-   <p>{props.text} {props.value}</p>
+        <table>
+            <tbody>
+                <tr>
+                   <td>
+                    <p>{props.text} {props.value}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+   
     </div>)
 }
 

@@ -1,9 +1,7 @@
 const Button=(props)=>{
     return(
     <div>
-      <button onClick={props.goodHandle}>good</button>
-      <button onClick={props.neutralHandle}>neutral</button>
-      <button onClick={props.badHandle}>bad</button>
+     <button onClick={props.buttonHandler} >{props.buttonName}</button>
     </div>)
 }
 export default Button;
