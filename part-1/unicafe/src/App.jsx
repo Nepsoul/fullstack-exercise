@@ -1,19 +1,6 @@
-import { useState } from 'react'
-
-const Statistics=(props)=>{ //component
-  const all=props.good+props.bad+props.neutral
-  return(
-    <div> 
-    <h1>statistics</h1>
-    <p>good {props.good}</p>
-    <p>neutral {props.neutral}</p>
-    <p>bad {props.bad}</p>
-    <p >all {all}</p>
-    <p>average {(props.good-props.bad)/3}</p>
-    <p>positive {`${(props.good/all)*100} %`}</p>
- </div> 
-)
-}
+import { useState } from 'react';
+import Button from './Button';
+import Statistics from './Statistics';
 
 
 const App = () => {
@@ -38,9 +25,7 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={goodHandleOnClick}>good</button>
-      <button onClick={neutralHandleOnClick}>neutral</button>
-      <button onClick={badHandleOnClick}>bad</button>
+      <Button goodHandle={goodHandleOnClick} neutralHandle={neutralHandleOnClick} badHandle={badHandleOnClick} />
       {good || neutral || bad ? <Statistics good= {good} neutral= {neutral} bad= {bad}/> : <p>No feedback given</p>}
     </div>
   )
