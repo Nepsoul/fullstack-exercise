@@ -36,16 +36,24 @@ const App = () => {
   };
   const copy = () => {
     let points = { ...votes };
-    points[selected] += 1
-    setVote(points)
+    points[selected] += 1;
+    setVote(points);
   };
 
+  let changeObj = Object.keys(votes).map((key) => votes[key]); //object change into array, to show max vote
+  const maxVote = Math.max(...changeObj);
+  const indexOfAnec = changeObj.indexOf(maxVote);
+  const highVoteAnec = anecdotes[indexOfAnec];
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <p>{`has ${votes[selected]} votes`}</p>
       <button onClick={copy}>vote</button>
       <button onClick={randomShow}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{highVoteAnec}</p>
+      <p>{`has ${maxVote} votes`}</p>
     </div>
   );
 };
