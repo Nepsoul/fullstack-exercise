@@ -1,10 +1,10 @@
 const Total = (props) => {
   return (
     <div>
-      <p>
+      <h3>
         Number of exercises{" "}
         {props.total.reduce((acc, curVal) => acc + curVal.exercises, 0)}
-      </p>
+      </h3>
     </div>
   );
 };
