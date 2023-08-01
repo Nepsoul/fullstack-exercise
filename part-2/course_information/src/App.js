@@ -1,6 +1,4 @@
-import Header from "./components/Header";
-import Content from "./components/Content";
-import Total from "./components/Total";
+import { Course } from "./components/Course";
 
 const App = () => {
   const course = {
@@ -27,9 +25,7 @@ const App = () => {
 
   return (
     <div>
-      <Header course={course.name} />
-      <Content course={course.parts} />
-      <Total total={course.parts} />
+      <Course course={course} />
     </div>
   );
 };
