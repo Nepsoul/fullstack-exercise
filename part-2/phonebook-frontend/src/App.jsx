@@ -37,7 +37,6 @@ setNewNumber("")
   
   let filterName=persons.filter(nameList=>(nameList.name.toLowerCase().includes(filterData.toLowerCase())))
 
-  
   return (<div>
     <h2>Phonebook</h2>
     <div>filter shown with <input value={filterData} onChange={handleFilterChange}/></div>
@@ -51,8 +50,6 @@ setNewNumber("")
       <button type="submit">add</button>
     </form>
     <h2>Numbers</h2>
-    <div>debug: {newName}</div>
-    <div>debug: {newNumber}</div>
     <ul>{filterName.map((person,index)=><li key={index}>{person.name} {person.number}</li>)}</ul>
   </div>)
 }
