@@ -7,19 +7,17 @@ const App=()=>{
 
 const addNewName=(event)=>{
 event.preventDefault()
-// console.log("button clicked:", event.target)
 const newNameObject={
   name:newName 
 }
-// setPersons([...persons,newNameObject])
-setPersons(persons.concat(newNameObject))
-// console.log("within funct:",persons)
+
+let existedName=persons.some(check=>check.name===newNameObject.name)
+existedName?alert(`"${newName}" is already added to phonebook`):setPersons(persons.concat(newNameObject))
 setNewName("")
 
   }
 
   const handleNameChange=(event)=>{
-    // console.log("name handle:",event.target.value)
     setNewName(event.target.value)
     
   }
