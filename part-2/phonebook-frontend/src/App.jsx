@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/filter";
 import Persons from "./components/Persons";
-import axios from "axios";
 import personService from "./services/persons";
 
 const App = () => {
@@ -51,7 +50,6 @@ const App = () => {
   let filterName = persons.filter((nameList) =>
     nameList.name.toLowerCase().includes(filterData.toLowerCase()),
   );
-  console.log("inside components");
   return (
     <div>
       <h2>Phonebook</h2>
@@ -64,7 +62,7 @@ const App = () => {
         addNewName={addNewName}
       />
       <h2>Numbers</h2>
-      <Persons filterName={filterName} />
+      <Persons filterName={filterName} setPersons={setPersons} />
     </div>
   );
 };
