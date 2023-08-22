@@ -23,7 +23,10 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     };
-
+    axios
+      .post("http://localhost:3001/persons", newNameObject)
+      .then((response) => console.log(response));
+      
     let existedName = persons.some(
       (check) => check.name === newNameObject.name,
     );
@@ -48,7 +51,6 @@ const App = () => {
   let filterName = persons.filter((nameList) =>
     nameList.name.toLowerCase().includes(filterData.toLowerCase()),
   );
-
   return (
     <div>
       <h2>Phonebook</h2>
