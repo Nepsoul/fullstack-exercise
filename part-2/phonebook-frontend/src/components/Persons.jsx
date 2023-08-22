@@ -1,11 +1,13 @@
 import personService from "../services/persons";
 
 const Persons = ({ filterName, setPersons }) => {
-  const toDeleteData = (id) => {
-    personService.delData(id).then((response) => {
-      const filterData = filterName.filter((person) => person.id !== id);
-      setPersons(filterData);
-    });
+  const toDeleteData = (id, name) => {
+    window.confirm(`Delete ${name}?`) === false
+      ? ""
+      : personService.delData(id).then((response) => {
+          const filterData = filterName.filter((person) => person.id !== id);
+          setPersons(filterData);
+        });
   };
 
   return (
@@ -16,9 +18,7 @@ const Persons = ({ filterName, setPersons }) => {
             {person.name} {person.number}{" "}
             <button
               onClick={() => {
-                window.confirm(`Delete ${person.name}`) === false
-                  ? "" //ternary operator, instead of empty string i.e. "", we can use person.name as well, "" this mean do nothing if false
-                  : toDeleteData(person.id);
+                toDeleteData(person.id, person.name);
               }}
             >
               delete
