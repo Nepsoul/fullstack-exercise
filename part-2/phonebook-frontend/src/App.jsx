@@ -3,6 +3,7 @@ import PersonForm from "./components/PersonForm";
 import Filter from "./components/filter";
 import Persons from "./components/Persons";
 import axios from "axios";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,7 +12,7 @@ const App = () => {
   const [filterData, setFilterData] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    personService.getAll().then((response) => {
       setPersons(response.data);
     });
   }, []);
@@ -29,9 +30,9 @@ const App = () => {
     );
     existedName
       ? alert(`"${newName}" is already added to phonebook`)
-      : axios
-          .post("http://localhost:3001/persons", newNameObject)
-          .then((response) => setPersons(persons.concat(newNameObject)));
+      : personService
+          .create(newNameObject)
+          .then((response) => setPersons(persons.concat(response.data)));
     setNewName("");
     setNewNumber("");
   };
@@ -50,6 +51,7 @@ const App = () => {
   let filterName = persons.filter((nameList) =>
     nameList.name.toLowerCase().includes(filterData.toLowerCase()),
   );
+  console.log("inside components");
   return (
     <div>
       <h2>Phonebook</h2>
