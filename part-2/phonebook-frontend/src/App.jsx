@@ -9,20 +9,11 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterData, setFilterData] = useState("");
-  console.log(persons, "person from promise");
 
   useEffect(() => {
-    console.log("effext");
-
-    let promise = axios.get("http://localhost:3001/persons");
-    console.log(promise, "promise in hook");
-
-    let returnedPromise = promise.then((response) => {
-      console.log(response, "response from then");
-      console.log("promise fulfilled");
+    axios.get("http://localhost:3001/persons").then((response) => {
       setPersons(response.data);
     });
-    console.log(returnedPromise, "after fetch the promise");
   }, []);
 
   const addNewName = (event) => {
