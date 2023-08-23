@@ -24,16 +24,28 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    let existedName = persons.some(
-      (check) => check.name === newNameObject.name,
-    );
-    existedName
-      ? alert(`"${newName}" is already added to phonebook`)
-      : personService
-          .create(newNameObject)
-          .then((response) => setPersons(persons.concat(response.data)));
-    setNewName("");
-    setNewNumber("");
+    let existedName = persons.some((check) => check.name === newName);
+
+    if (existedName) {
+      let alertNotification = window.confirm(
+        `"${newName}" is already added to phonebook, replace the old number with a new one`,
+      );
+      if (alertNotification) {
+        setPersons(
+          persons.map((singleData) => {
+            if (singleData.name === newName) {
+              return { ...singleData, number: newNumber};
+            } else return singleData;
+          }),
+        );
+      }
+    } else {
+      personService
+        .create(newNameObject)
+        .then((response) => setPersons(persons.concat(response.data)));
+      setNewName("");
+      setNewNumber("");
+    }
   };
 
   const handleNameChange = (event) => {
