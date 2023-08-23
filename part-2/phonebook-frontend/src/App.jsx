@@ -9,6 +9,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterData, setFilterData] = useState("");
+  const [notification, setNotification] = useState("");
 
   useEffect(() => {
     personService.getAll().then((response) => {
@@ -31,7 +32,6 @@ const App = () => {
         `"${newName}" is already added to phonebook, replace the old number with a new one`,
       );
       if (alertNotification) {
-
         existedName.number = newNumber; //updated number of existed data
 
         personService.update(existedName.id, existedName).then((response) => {
@@ -45,6 +45,12 @@ const App = () => {
         });
         setNewName("");
         setNewNumber("");
+        setNotification(
+          `${newName}'s number changed into new number: ${newNumber}`,
+        );
+        setTimeout(() => {
+          setNotification("");
+        }, 5000);
       }
     } else {
       personService
@@ -52,6 +58,10 @@ const App = () => {
         .then((response) => setPersons(persons.concat(response.data)));
       setNewName("");
       setNewNumber("");
+      setNotification(`Added "${newName}" in phonebook`);
+      setTimeout(() => {
+        setNotification("");
+      }, 5000);
     }
   };
 
@@ -72,6 +82,22 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div
+        style={{
+          color: "green",
+          fontStyle: "italic",
+          fontSize: 24,
+          fontWeight: 400,
+          background: "lightgrey",
+          border: "solid",
+          borderRadius: 5,
+          padding: 10,
+          marginBottom: 30,
+        }}
+      >
+        {" "}
+        {notification}
+      </div>
       <Filter filterData={filterData} handleFilterChange={handleFilterChange} />
       <PersonForm
         newName={newName}
