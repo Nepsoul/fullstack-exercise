@@ -1,6 +1,6 @@
 import personService from "../services/persons";
 
-const Persons = ({ filterName, setPersons, setNotification }) => {
+const Persons = ({ filterName, setPersons, setNotification ,setColor }) => {
   const toDeleteData = (id, name) => {
     window.confirm(`Delete ${name}?`) === false
       ? ""
@@ -8,9 +8,10 @@ const Persons = ({ filterName, setPersons, setNotification }) => {
           const filterData = filterName.filter((person) => person.id !== id);
           setPersons(filterData);
           setNotification(`${name}: deleted`);
+          setColor("delete")
           setTimeout(() => {
             setNotification("");
-          }, 5000);
+          }, 3000);
         });
   };
 

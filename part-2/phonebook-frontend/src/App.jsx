@@ -11,11 +11,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterData, setFilterData] = useState("");
   const [notification, setNotification] = useState("");
+  const [colorMessage, setColor] = useState("");
 
   useEffect(() => {
-    personService.getAll().then((response) => {
-      setPersons(response.data);
-    });
+    personService
+      .getAll()
+      .then((response) => {
+        setPersons(response.data);
+      })
+      .catch((error) => console.log("promise is failed: ", error));
   }, []);
 
   const addNewName = (event) => {
@@ -49,9 +53,11 @@ const App = () => {
         setNotification(
           `${newName}'s number changed into new number: ${newNumber}`,
         );
+        setColor("update");
         setTimeout(() => {
           setNotification("");
-        }, 5000);
+        }, 3000)
+       
       }
     } else {
       personService
@@ -60,9 +66,10 @@ const App = () => {
       setNewName("");
       setNewNumber("");
       setNotification(`Added "${newName}" in phonebook`);
+      setColor("update");
       setTimeout(() => {
         setNotification("");
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -83,7 +90,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification notification={notification} />
+    <div>  <Notification notification={notification} colorMessage={colorMessage} /></div>
       <Filter filterData={filterData} handleFilterChange={handleFilterChange} />
       <PersonForm
         newName={newName}
@@ -93,7 +100,12 @@ const App = () => {
         addNewName={addNewName}
       />
       <h2>Numbers</h2>
-      <Persons filterName={filterName} setPersons={setPersons} setNotification={setNotification}/>
+      <Persons
+        filterName={filterName}
+        setPersons={setPersons}
+        setNotification={setNotification}
+        setColor={setColor}
+      />
     </div>
   );
 };
