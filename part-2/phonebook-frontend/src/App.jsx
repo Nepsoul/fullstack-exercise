@@ -19,7 +19,7 @@ const App = () => {
       .then((response) => {
         setPersons(response.data);
       })
-      .catch((error) => console.log("promise is failed: ", error));
+      .catch((error) => console.log("promise failed: ", error.message));
   }, []);
 
   const addNewName = (event) => {
@@ -39,37 +39,53 @@ const App = () => {
       if (alertNotification) {
         existedName.number = newNumber; //updated number of existed data
 
-        personService.update(existedName.id, existedName).then((response) => {
-          setPersons(
-            persons.map((singleData) => {
-              if (singleData.id === existedName.id) {
-                return { ...singleData, number: newNumber };
-              } else return singleData;
-            }),
-          );
-        });
-        setNewName("");
-        setNewNumber("");
-        setNotification(
-          `${newName}'s number changed into new number: ${newNumber}`,
-        );
-        setColor("update");
-        setTimeout(() => {
-          setNotification("");
-        }, 3000)
-       
+        personService
+          .update(existedName.id, existedName)
+          .then((response) => {
+            setPersons(
+              persons.map((singleData) => {
+                if (singleData.id === existedName.id) {
+                  return { ...singleData, number: newNumber };
+                } else return singleData;
+              }),
+            );
+            setNewName("");
+            setNewNumber("");
+            setNotification(
+              `${newName}'s number changed into new number: ${newNumber}`,
+            );
+            setColor("update");
+            setTimeout(() => {
+              setNotification("");
+            }, 3000);
+          })
+          .catch((error) => {
+            console.log("promise failed, from put api:", error.message)
+            setNotification(
+              `Information of ${newName} has already been removed from server`,
+            );
+            setColor("error");
+            setTimeout(() => {
+              setNotification("");
+            }, 3000);
+            setNewName("");
+            setNewNumber("");
+          });
       }
     } else {
       personService
         .create(newNameObject)
-        .then((response) => setPersons(persons.concat(response.data)));
-      setNewName("");
-      setNewNumber("");
-      setNotification(`Added "${newName}" in phonebook`);
-      setColor("update");
-      setTimeout(() => {
-        setNotification("");
-      }, 3000);
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          setNewName("");
+          setNewNumber("");
+          setNotification(`Added "${newName}" in phonebook`);
+          setColor("update");
+          setTimeout(() => {
+            setNotification("");
+          }, 3000);
+        })
+        .catch((error) => console.log("promise failed, from post api: ", error.message));
     }
   };
 
@@ -90,7 +106,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-    <div>  <Notification notification={notification} colorMessage={colorMessage} /></div>
+      <div>
+        {" "}
+        <Notification notification={notification} colorMessage={colorMessage} />
+      </div>
       <Filter filterData={filterData} handleFilterChange={handleFilterChange} />
       <PersonForm
         newName={newName}

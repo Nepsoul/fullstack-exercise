@@ -1,5 +1,4 @@
 .update {
-  /* display: flex; */
   color: green;
   font-style: italic;
   font-size: 24px;
@@ -25,7 +24,7 @@
 }
 .delete {
   color: red;
-  background-color: azure;
+  background-color: yellow;
   font-size: 24px;
   font-weight: 800;
   height: 30px;

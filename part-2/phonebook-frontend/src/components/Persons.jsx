@@ -12,7 +12,7 @@ const Persons = ({ filterName, setPersons, setNotification ,setColor }) => {
           setTimeout(() => {
             setNotification("");
           }, 3000);
-        });
+        }).catch((error)=>console.log("promise rejected, from delete api: ",error.message))
   };
 
   return (
