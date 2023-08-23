@@ -3,6 +3,7 @@ import PersonForm from "./components/PersonForm";
 import Filter from "./components/filter";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -82,22 +83,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div
-        style={{
-          color: "green",
-          fontStyle: "italic",
-          fontSize: 24,
-          fontWeight: 400,
-          background: "lightgrey",
-          border: "solid",
-          borderRadius: 5,
-          padding: 10,
-          marginBottom: 30,
-        }}
-      >
-        {" "}
-        {notification}
-      </div>
+      <Notification notification={notification} />
       <Filter filterData={filterData} handleFilterChange={handleFilterChange} />
       <PersonForm
         newName={newName}
@@ -107,7 +93,7 @@ const App = () => {
         addNewName={addNewName}
       />
       <h2>Numbers</h2>
-      <Persons filterName={filterName} setPersons={setPersons} />
+      <Persons filterName={filterName} setPersons={setPersons} setNotification={setNotification}/>
     </div>
   );
 };
