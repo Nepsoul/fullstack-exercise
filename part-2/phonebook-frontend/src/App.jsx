@@ -24,20 +24,27 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    let existedName = persons.some((check) => check.name === newName);
+    let existedName = persons.find((check) => check.name === newName);
 
     if (existedName) {
       let alertNotification = window.confirm(
         `"${newName}" is already added to phonebook, replace the old number with a new one`,
       );
       if (alertNotification) {
-        setPersons(
-          persons.map((singleData) => {
-            if (singleData.name === newName) {
-              return { ...singleData, number: newNumber};
-            } else return singleData;
-          }),
-        );
+
+        existedName.number = newNumber; //updated number of existed data
+
+        personService.update(existedName.id, existedName).then((response) => {
+          setPersons(
+            persons.map((singleData) => {
+              if (singleData.id === existedName.id) {
+                return { ...singleData, number: newNumber };
+              } else return singleData;
+            }),
+          );
+        });
+        setNewName("");
+        setNewNumber("");
       }
     } else {
       personService
