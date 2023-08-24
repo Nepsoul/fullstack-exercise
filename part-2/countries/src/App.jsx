@@ -4,6 +4,7 @@ import axios from "axios";
 const App = () => {
   const [countryData, setCountryData] = useState([]);
   const [search, setSearch] = useState("");
+  console.log(search, "search");
 
   useEffect(() => {
     axios
@@ -11,7 +12,7 @@ const App = () => {
       .then((response) => {
         setCountryData(response.data);
       })
-      .catch((error) => console.log("promise rejected: ", error));
+      .catch((error) => console.log("promise rejected: ", error.message));
   }, []);
 
   const eventHandler = (event) => {
@@ -20,7 +21,7 @@ const App = () => {
   let searchData = countryData.filter((nameList) => {
     return nameList.name.common.toLowerCase().includes(search.toLowerCase());
   });
-
+  console.log(searchData, "serachdata");
   return (
     <div>
       <div>
@@ -31,7 +32,23 @@ const App = () => {
         <p> too many countries specify one</p>
       ) : (
         searchData.map((countryList) => (
-          <li key={countryList.cca2}> {countryList.name.common}</li>
+          // <li key={countryList.cca2}> {countryList.name.common}</li>
+          <div key={countryList.cca2}>
+            <h2>{countryList.name.common}</h2>
+            <p>capital: {countryList.capital}</p>
+            <p>area: {countryList.area}</p>
+            <h4>languages: </h4>
+            <ul>
+              {Object.keys(countryList.languages).map((language, i) => (
+                <li key={i}>{countryList.languages[language]}</li>
+              ))}
+            </ul>
+            <img
+              style={{ height: '300px', width: '300px' }}
+              alt="Country Flag"
+              src={countryList.flags.png}
+            />
+          </div>
         ))
       )}
     </div>
