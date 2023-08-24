@@ -26,12 +26,14 @@ const App = () => {
       <div>
         find countries <input value={search} onChange={eventHandler} />
       </div>
-
-      {searchData.map((countryList) => {
-        return <li key={countryList.cca2}> {countryList.name.common}</li>;
-      })}
-
-      <div>debug: {search}</div>
+      <br />
+      {searchData.length > 10 ? (
+        <p> too many countries specify one</p>
+      ) : (
+        searchData.map((countryList) => (
+          <li key={countryList.cca2}> {countryList.name.common}</li>
+        ))
+      )}
     </div>
   );
 };
