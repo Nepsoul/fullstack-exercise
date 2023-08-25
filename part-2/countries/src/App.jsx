@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CountryDetail from "./components/CountyDetail";
+import CountryList from "./components/CountryList"
 
 const App = () => {
   const [countryData, setCountryData] = useState([]);
@@ -34,7 +35,7 @@ const App = () => {
       ) : searchData.length === 1 ? (
         <CountryDetail singleData={searchData[0]} />
       ) : (
-        searchData.map((countries)=><li key={countries.cca2}>{countries.name.common}</li>)
+       <CountryList searchList={searchData}/>
         )
       }
     </div>
