@@ -28,9 +28,12 @@ app.get("/",(request,response)=>{
     response.send("<h2>Hello world<h2/>")
 })
 
+app.get("/info",(req,res)=>{
+    res.send(`Phonebook has info for ${persons.length} people <br/>  <br/>${new Date()}`)
+})
 app.get("/api/persons/",(request,response)=>{
-    // response.json(persons) //express auto convert into json format
-    response.end(JSON.stringify(persons)) //explicitly set res content to manually convert into json format
+    response.json(persons) //express auto convert into json format
+    // response.end(JSON.stringify(persons)) //explicitly set res content to manually convert into json format
 })
 
 const PORT=3001
