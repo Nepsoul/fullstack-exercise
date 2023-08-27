@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.use(express.json()); //json-parser
+app.use(express.json()); //json-parser (note: without parser, req.body is undefined)
 
 let persons = [
   {
@@ -61,8 +61,21 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
   let newData = req.body;
   newData.id = Math.floor(Math.random() * persons.length * 10000000);
+
+  let existedData = persons.find((person) => person.name === newData.name);
+  if (existedData) {
+    return res.status(400).json({ error: "name must be unique" });
+  }
+  if (
+    newData.name === "" ||
+    newData.number === "" ||
+    !newData.hasOwnProperty("name") ||
+    !newData.hasOwnProperty("number")
+  ) {
+    return res.status(400).json({ error: "name or number is missing" });
+  }
   persons = persons.concat(newData);
-  res.json(newData);
+  res.status(201).json(newData);
 });
 const PORT = 3001;
 app.listen(PORT, () => {
