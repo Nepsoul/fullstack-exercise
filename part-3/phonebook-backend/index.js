@@ -3,6 +3,9 @@ const app = express();
 const morgan = require("morgan");
 // app.use(morgan("tiny")); //predefined logger middleware(either "tiny" or custom)
 
+const cors = require("cors"); //allow request from other/cross-origin
+app.use(cors());
+
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
 app.use(
   morgan(function (tokens, req, res) {
