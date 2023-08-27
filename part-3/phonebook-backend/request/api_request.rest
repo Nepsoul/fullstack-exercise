@@ -4,11 +4,10 @@ GET http://localhost:3001/api/persons
 DELETE http://localhost:3001//api/persons
 
 ###
-POST http://localhost:3001//api/persons
+POST http://localhost:3001/api/persons
 Content-Type: application/json
 
-{
-    "id":"0",
-    "name": "new data posted after deploy in render",
+{ 
+   "name": "post after connecting to database",
    "number": "040-123456"
 }

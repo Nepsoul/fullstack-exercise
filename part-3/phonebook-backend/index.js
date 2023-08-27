@@ -1,34 +1,14 @@
 const express = require("express");
 const app = express();
+
+require("dotenv").config(); //to access env file
+
 const morgan = require("morgan");
 // app.use(morgan("tiny")); //predefined logger middleware(either "tiny" or custom)
 
+const Person = require("./models/person"); //import Person from database through env
+
 const cors = require("cors"); //allow request from other/cross-origin
-
-const mongoose = require("mongoose");
-
-const password = process.argv[2];
-
-const url = `mongodb+srv://mangoose:${password}@cluster0.oxhvxoo.mongodb.net/phonebook-app?retryWrites=true&w=majority`;
-console.log(url, "ursl");
-
-mongoose.set("strictQuery", false);
-mongoose.connect(url);
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String, //to provide number with character
-});
-
-const Person = mongoose.model("Person", personSchema);
-
-personSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
 
 app.use(cors());
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
@@ -86,26 +66,40 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  let newData = req.body;
-  newData.id = Math.floor(Math.random() * Person.length * 10000000);
+  const newData = req.body;
+  console.log(newData, "newdata");
+  if (newData.name === undefined) {
+    return res.status(400).json({ error: "name missing" });
+  }
 
-  let existedData = Person.find((person) => person.name === newData.name);
-  console.log(newData);
-  if (existedData) {
-    return res.status(400).json({ error: "name must be unique" });
-  }
-  if (
-    newData.name === "" ||
-    newData.number === "" ||
-    !newData.hasOwnProperty("name") ||
-    !newData.hasOwnProperty("number")
-  ) {
-    return res.status(400).json({ error: "name or number is missing" });
-  }
-  Person = Person.concat(newData);
-  res.status(201).json(newData);
+  const person = new Person({
+    name: newData.name,
+    number: newData.number,
+  });
+
+  person.save().then((result) => {
+    res.json(result);
+  });
+  //   newData.id = Math.floor(Math.random() * Person.length * 10000000);
+
+  //   let existedData = Person.find((person) => person.name === newData.name);
+  //   console.log(newData);
+  //   if (existedData) {
+  //     return res.status(400).json({ error: "name must be unique" });
+  //   }
+  //   if (
+  //     newData.name === "" ||
+  //     newData.number === "" ||
+  //     !newData.hasOwnProperty("name") ||
+  //     !newData.hasOwnProperty("number")
+  //   ) {
+  //     return res.status(400).json({ error: "name or number is missing" });
+  //   }
+  //   Person = Person.concat(newData);
+  //   res.status(201).json(newData);
 });
-const PORT = 3001;
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
