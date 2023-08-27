@@ -107,6 +107,19 @@ app.post("/api/persons", (req, res) => {
   //   res.status(201).json(newData);
 });
 
+app.put("/api/persons/:id", (req, res, next) => {
+  const updatedData = req.body;
+  const person = {
+    name: updatedData.name,
+    number: updatedData.number,
+  };
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson);
+    })
+    .catch((error) => next(error));
+});
+
 //handle error if given absolut url is wrong
 app.use((request, response, next) => {
   response.status(404).send("<h1>No routes found for this request</h1>");
