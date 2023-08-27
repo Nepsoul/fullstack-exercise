@@ -7,6 +7,8 @@ const cors = require("cors"); //allow request from other/cross-origin
 app.use(cors());
 
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
+app.use(express.static("dist")); //middleware to check dist directory to show frontend and backend(in same url/3001 port)
+
 app.use(
   morgan(function (tokens, req, res) {
     //custom logger/request-logger middleware (in terminal give hitted api)
