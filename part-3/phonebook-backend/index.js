@@ -38,6 +38,7 @@ app.get("/info", (req, res) => {
     `Phonebook has info for ${Person.length} people <br/>  <br/>${new Date()}`
   );
 });
+
 app.get("/api/persons", (request, response) => {
   Person.find({}).then((result) => {
     response.json(result);
@@ -46,7 +47,7 @@ app.get("/api/persons", (request, response) => {
   // response.end(JSON.stringify(persons)) //explicitly set res content to manually convert into json format
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   Person.findById(req.params.id)
     .then((person) => {
       if (person) res.json(person);
@@ -58,15 +59,18 @@ app.get("/api/persons/:id", (req, res) => {
       }
     })
     .catch((error) => {
-      console.log(error.message);
-      res.status(400).send({ error: "malformatted id" });
+      next(error);
+      //   console.log(error.message);
+      //   res.status(400).send({ error: "malformatted id" });
     });
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  Person.findByIdAndRemove(req.params.id).then((result) => {
-    res.status(204).end();
-  });
+app.delete("/api/persons/:id", (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -102,6 +106,30 @@ app.post("/api/persons", (req, res) => {
   //   Person = Person.concat(newData);
   //   res.status(201).json(newData);
 });
+
+//handle error if given absolut url is wrong
+app.use((request, response, next) => {
+  response.status(404).send("<h1>No routes found for this request</h1>");
+});
+
+//handle error if relative url unknown
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint);
+
+const errorHandler = (error, req, res, next) => {
+  console.log(error.message);
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+  next(error);
+};
+
+// this has to be the last loaded middleware.
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
