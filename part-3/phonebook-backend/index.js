@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json()); //json-parser
+
 let persons = [
   {
     id: 1,
@@ -33,7 +35,7 @@ app.get("/info", (req, res) => {
     `Phonebook has info for ${persons.length} people <br/>  <br/>${new Date()}`
   );
 });
-app.get("/api/persons/", (request, response) => {
+app.get("/api/persons", (request, response) => {
   response.json(persons); //express auto convert into json format
   // response.end(JSON.stringify(persons)) //explicitly set res content to manually convert into json format
 });
@@ -56,6 +58,11 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
+app.post("/api/persons", (req, res) => {
+  let newData = req.body;
+  persons = persons.concat(newData);
+  res.json(newData);
+});
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
