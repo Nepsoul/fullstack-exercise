@@ -60,6 +60,7 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   let newData = req.body;
+  newData.id = Math.floor(Math.random() * persons.length * 10000000);
   persons = persons.concat(newData);
   res.json(newData);
 });
