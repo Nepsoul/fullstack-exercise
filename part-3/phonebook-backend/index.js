@@ -11,6 +11,7 @@ const Person = require("./models/person"); //import Person from database through
 const cors = require("cors"); //allow request from other/cross-origin
 
 app.use(cors());
+
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
 app.use(express.static("dist")); //middleware to check dist directory to show frontend and backend(in same url/3001 port)
 
@@ -73,7 +74,7 @@ app.delete("/api/persons/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const newData = req.body;
   console.log(newData, "newdata");
   if (newData.name === undefined) {
@@ -85,9 +86,12 @@ app.post("/api/persons", (req, res) => {
     number: newData.number,
   });
 
-  person.save().then((result) => {
-    res.json(result);
-  });
+  person
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => next(error));
   //   newData.id = Math.floor(Math.random() * Person.length * 10000000);
 
   //   let existedData = Person.find((person) => person.name === newData.name);
@@ -108,12 +112,16 @@ app.post("/api/persons", (req, res) => {
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-  const updatedData = req.body;
-  const person = {
-    name: updatedData.name,
-    number: updatedData.number,
-  };
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  //const updatedData = req.body;
+  //   const person = {
+  //     name: updatedData.name,
+  //     number: updatedData.number,
+  //   };
+  Person.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  })
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })
@@ -137,6 +145,8 @@ const errorHandler = (error, req, res, next) => {
   console.log(error.message);
   if (error.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
   }
   next(error);
 };

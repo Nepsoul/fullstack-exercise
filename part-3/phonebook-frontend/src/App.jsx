@@ -31,17 +31,19 @@ const App = () => {
     };
 
     let existedName = persons.find((check) => check.name === newName);
-
+    
     if (existedName) {
       let alertNotification = window.confirm(
         `"${newName}" is already added to phonebook, replace the old number with a new one`,
       );
       if (alertNotification) {
+
         existedName.number = newNumber; //updated number of existed data
 
         personService
           .update(existedName.id, existedName)
           .then((response) => {
+            
             setPersons(
               persons.map((singleData) => {
                 if (singleData.id === existedName.id) {
@@ -85,7 +87,16 @@ const App = () => {
             setNotification("");
           }, 3000);
         })
-        .catch((error) => console.log("promise failed, from post api: ", error.message));
+        .catch((error) => {
+          //displaying validation error msg returned by mongoose
+          console.log("promise failed, from post api: ", error.message)
+        setNotification(error.response.data.error)
+        setColor("error")
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
+        });
+
     }
   };
 
@@ -100,9 +111,11 @@ const App = () => {
     setFilterData(e.target.value);
   };
 
+ 
   let filterName = persons.filter((nameList) =>
     nameList.name.toLowerCase().includes(filterData.toLowerCase()),
   );
+
   return (
     <div>
       <h2>Phonebook</h2>
