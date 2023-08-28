@@ -11,12 +11,7 @@ const CountryDetail = ({ singleData }) => {
   const api_key = import.meta.env.VITE_SOME_KEY
 
   useEffect(() => {
-    if (singleData) {
-      fetchData();
-    }
-  }, [singleData]);
 
-  let fetchData = () => {
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?q=${singleData.capital[0]}&appid=${api_key}`,
@@ -29,7 +24,7 @@ const CountryDetail = ({ singleData }) => {
         }),
       )
       .catch((error) => console.log("error api: ", error.message));
-  };
+  },[]);
   return (
     <div>
       <div key={singleData.cca2}>
@@ -49,11 +44,14 @@ const CountryDetail = ({ singleData }) => {
         />
         <h3>weather in {singleData.capital[0]}</h3>
         <p>temperature {weather.temperature + " °Celcius"}</p>
+        
+        {weather.weatherIcon===""?null:(  //ternary for eliminate error while 1st time data fetch
         <img
           style={{ height: "200px", width: "200px" }}
           alt="wetherIcon"
           src={` https://openweathermap.org/img/wn/${weather.weatherIcon}@2x.png`}
         />
+        )}
         <p>wind {weather.wind + " m/s"}</p>
       </div>
     </div>
