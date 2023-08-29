@@ -32,7 +32,6 @@ const App = () => {
     };
 
     let existedName = persons.find((check) => check.name === newName);
-    console.log(existedName, "hellow");
 
     if (existedName) {
       let alertNotification = window.confirm(
@@ -40,21 +39,19 @@ const App = () => {
       );
       
       if (alertNotification) {
-        existedName.number = newNumber; //updated number of existed data
-        debugger
-
+        // existedName.number = newNumber; //updated number of existed data, mutate the state
+       let updatedData={...existedName,number:newNumber}
+      
         personService
           .update(existedName.id, existedName)
           .then((response) => {
-            console.log("updating data")
             setPersons(
               persons.map((singleData) => {
-                if (singleData.id === existedName.id) {
-                  return existedName;
+                if (singleData.id === updatedData.id) {
+                  return updatedData;
                 } else return singleData;
               }),
             );
-            console.log("after updated data")
             setNewName("");
             setNewNumber("");
             setNotification(
@@ -68,7 +65,7 @@ const App = () => {
           .catch((error) => {
             console.log("promise failed, from put api:", error.message);
             setNotification(
-              `Information of ${newName} has already been removed from server`,
+              error.response.data.error
             );
             setColor("error");
             setTimeout(() => {

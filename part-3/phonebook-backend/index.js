@@ -124,7 +124,9 @@ app.put("/api/persons/:id", (req, res, next) => {
   })
     .then((updatedPerson) => {
       if (updatedPerson === null) {
-        res.status(404);
+        res.status(404).json({
+          error: `data of "${updatedData.name}" has already been removed from server`,
+        });
       }
       res.json(updatedPerson);
     })
