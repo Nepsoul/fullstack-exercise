@@ -112,20 +112,26 @@ app.post("/api/persons", (req, res, next) => {
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-  //const updatedData = req.body;
-  //   const person = {
-  //     name: updatedData.name,
-  //     number: updatedData.number,
-  //   };
-  Person.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedData = req.body;
+  const person = {
+    name: updatedData.name,
+    number: updatedData.number,
+  };
+  Person.findByIdAndUpdate(req.params.id, person, {
     new: true,
     runValidators: true,
     context: "query",
   })
     .then((updatedPerson) => {
+      if (updatedPerson === null) {
+        res.status(404);
+      }
       res.json(updatedPerson);
     })
-    .catch((error) => next(error));
+    .catch((error) => {
+      console.log(error.message, "put error message");
+      next(error);
+    });
 });
 
 //handle error if given absolut url is wrong

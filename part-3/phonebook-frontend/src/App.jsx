@@ -24,6 +24,7 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault();
+
     const newNameObject = {
       name: newName,
       number: newNumber,
@@ -31,26 +32,29 @@ const App = () => {
     };
 
     let existedName = persons.find((check) => check.name === newName);
-    
+    console.log(existedName, "hellow");
+
     if (existedName) {
       let alertNotification = window.confirm(
         `"${newName}" is already added to phonebook, replace the old number with a new one`,
       );
+      
       if (alertNotification) {
-
         existedName.number = newNumber; //updated number of existed data
+        debugger
 
         personService
           .update(existedName.id, existedName)
           .then((response) => {
-            
+            console.log("updating data")
             setPersons(
               persons.map((singleData) => {
                 if (singleData.id === existedName.id) {
-                  return { ...singleData, number: newNumber };
+                  return existedName;
                 } else return singleData;
               }),
             );
+            console.log("after updated data")
             setNewName("");
             setNewNumber("");
             setNotification(
@@ -62,7 +66,7 @@ const App = () => {
             }, 3000);
           })
           .catch((error) => {
-            console.log("promise failed, from put api:", error.message)
+            console.log("promise failed, from put api:", error.message);
             setNotification(
               `Information of ${newName} has already been removed from server`,
             );
@@ -89,14 +93,13 @@ const App = () => {
         })
         .catch((error) => {
           //displaying validation error msg returned by mongoose
-          console.log("promise failed, from post api: ", error.message)
-        setNotification(error.response.data.error)
-        setColor("error")
-        setTimeout(() => {
-          setNotification("");
-        }, 3000);
+          console.log("promise failed, from post api: ", error.message);
+          setNotification(error.response.data.error);
+          setColor("error");
+          setTimeout(() => {
+            setNotification("");
+          }, 3000);
         });
-
     }
   };
 
@@ -111,7 +114,6 @@ const App = () => {
     setFilterData(e.target.value);
   };
 
- 
   let filterName = persons.filter((nameList) =>
     nameList.name.toLowerCase().includes(filterData.toLowerCase()),
   );
