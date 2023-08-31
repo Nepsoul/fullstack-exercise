@@ -26,18 +26,25 @@ app.use(
       "-",
       tokens["response-time"](req, res),
       "ms",
+      JSON.stringify(req.body), //data show in terminal
     ].join(" ");
   })
 );
 
-app.get("/", (request, response) => {
-  response.send("<h2>Hello world<h2/>");
-});
-
+//get length of data from database
 app.get("/info", (req, res) => {
-  res.send(
-    `Phonebook has info for ${Person.length} people <br/>  <br/>${new Date()}`
-  );
+  // Person.find({}).then((result) => {
+  //   // res.json({ length: result.length });
+  //   res.send(
+  //     `Phonebook has info for ${result.length} people <br/>  <br/>${new Date()}`
+  //   );
+  // });
+  Person.estimatedDocumentCount({}).then((result) => {
+    //Person.count({}) works as well
+    res.send(
+      `Phonebook has info for ${result} people <br/>  <br/>${new Date()}`
+    );
+  });
 });
 
 app.get("/api/persons", (request, response) => {
@@ -76,7 +83,6 @@ app.delete("/api/persons/:id", (req, res, next) => {
 
 app.post("/api/persons", (req, res, next) => {
   const newData = req.body;
-  console.log(newData, "newdata");
   if (newData.name === undefined) {
     return res.status(400).json({ error: "name missing" });
   }
@@ -162,7 +168,7 @@ const errorHandler = (error, req, res, next) => {
 // this has to be the last loaded middleware.
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

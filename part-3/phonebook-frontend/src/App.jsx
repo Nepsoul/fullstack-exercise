@@ -43,7 +43,7 @@ const App = () => {
        let updatedData={...existedName,number:newNumber}
       
         personService
-          .update(existedName.id, existedName)
+          .update(existedName.id, updatedData)
           .then((response) => {
             setPersons(
               persons.map((singleData) => {
