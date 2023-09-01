@@ -6,7 +6,7 @@ console.log("connection to url: ", url);
 mongoose.set("strictQuery", false);
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log("connected to mongoDB");
   })
   .catch((error) => {
@@ -14,7 +14,7 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: { type: String, minLength: 5, required: true },
+  name: { type: String, minLength: 5, required: true, unique: true },
   number: {
     type: String,
     validate: {

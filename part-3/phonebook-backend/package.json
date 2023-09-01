@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../phonebook-frontend/ && npm run build && cd src && cp -r dist ../../phonebook-backend"
+    "build:ui": "rm -rf dist && cd ../phonebook-frontend/ && npm run build && cd src && cp -r dist ../../phonebook-backend",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.48.0",
     "nodemon": "^3.0.1"
   }
 }

@@ -62,7 +62,10 @@ app.get("/api/persons/:id", (req, res, next) => {
       else {
         res
           .status(404)
-          .json({ error: 404, message: `there is no peroson with id ` + id })
+          .json({
+            error: 404,
+            message: `there is no peroson with id ` + req.params.id,
+          })
           .end();
       }
     })
@@ -75,7 +78,7 @@ app.get("/api/persons/:id", (req, res, next) => {
 
 app.delete("/api/persons/:id", (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then((result) => {
+    .then(() => {
       res.status(204).end();
     })
     .catch((error) => next(error));
@@ -87,17 +90,23 @@ app.post("/api/persons", (req, res, next) => {
     return res.status(400).json({ error: "name missing" });
   }
 
-  const person = new Person({
-    name: newData.name,
-    number: newData.number,
-  });
+  Person.findOne({ name: newData.name }).then((result) => {
+    if (result) {
+      res.json({ error: "name must be unique" });
+    } else {
+      const person = new Person({
+        name: newData.name,
+        number: newData.number,
+      });
 
-  person
-    .save()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => next(error));
+      person
+        .save()
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((error) => next(error));
+    }
+  });
   //   newData.id = Math.floor(Math.random() * Person.length * 10000000);
 
   //   let existedData = Person.find((person) => person.name === newData.name);
@@ -143,7 +152,7 @@ app.put("/api/persons/:id", (req, res, next) => {
 });
 
 //handle error if given absolut url is wrong
-app.use((request, response, next) => {
+app.use((request, response) => {
   response.status(404).send("<h1>No routes found for this request</h1>");
 });
 

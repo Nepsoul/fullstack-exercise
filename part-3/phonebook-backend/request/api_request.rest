@@ -4,19 +4,19 @@ GET http://localhost:3001/api/persons
 GET http://localhost:3001/api/persons/64eb0f07ce111657f772ccca
 
 ###
-DELETE http://localhost:3001/api/persons/64ecc52ed41cd7c2439789ba
+DELETE http://localhost:3001/api/persons/64f07a019c3e744c3b7964c1
 
 ###
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 { 
-   "name": "post form validation",
+   
    "number": "040-1234562"
 }
 
 ###
-PUT  http://localhost:3001/api/persons/64ed7aa2378c25982e7b6d12
+PUT  http://localhost:3001/api/persons/64f074650829eef20b3abc78
 Content-Type: application/json
 
 { 
