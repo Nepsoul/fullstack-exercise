@@ -90,7 +90,9 @@ app.post("/api/persons", (req, res, next) => {
     return res.status(400).json({ error: "name missing" });
   }
 
-  Person.findOne({ name: newData.name }).then((result) => {
+  //findOne({})=>retrieves the first document that match query condn,
+  //find({})=>method with qurery obj, return array of document data that match the condn
+  Person.find({ name: newData.name }).then((result) => {
     if (result) {
       res.json({ error: "name must be unique" });
     } else {

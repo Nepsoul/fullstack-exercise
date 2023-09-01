@@ -14,7 +14,7 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: { type: String, minLength: 5, required: true, unique: true },
+  name: { type: String, minLength: 5, required: true, unique: true }, //to unique:true, key value for unique user
   number: {
     type: String,
     validate: {
