@@ -1,8 +1,10 @@
+const { info, error } = require("./logger");
+
 const requestLogger = (request, response, next) => {
-  logger.info("Method:", request.method);
-  logger.info("Path:  ", request.path);
-  logger.info("Body:  ", request.body);
-  logger.info("---");
+  info("Method:", request.method);
+  info("Path:  ", request.path);
+  info("Body:  ", request.body);
+  info("used api method");
   next();
 };
 
@@ -12,12 +14,12 @@ const noHandler = (request, response) => {
 };
 
 //handle error if relative url unknown
-const unknownEndpoint = (req, res) => {
-  res.status(404).send({ error: "unknown endpoint" });
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
 };
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+  error(error.message);
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
