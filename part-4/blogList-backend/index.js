@@ -1,27 +1,10 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
+require("dotenv").config(); //to access env file
 
-const mongoUrl = `mongodb+srv://<username>:<password>@cluster0.oxhvxoo.mongodb.net/blogList-app?retryWrites=true&w=majority`;
-mongoose.set("strictQuery", false);
-mongoose.connect(mongoUrl);
+const Blog = require("./model/blog");
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
-
-blogSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
+app.use(express.json()); //json-parser
 
 app.get("/", (req, res) => {
   res.send("<h2>This is new Blog-project</h2>");
