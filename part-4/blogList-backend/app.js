@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const mongoUrl = require("./utils/config");
+const logger = require("./utils/logger");
+
 const {
   unknownEndpoint,
   errorHandler,
@@ -14,17 +16,17 @@ const blogController = require("./controllers/blogs_api");
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
 
 mongoose.set("strictQuery", false);
-console.log("connecting to url ", mongoUrl.MONGODB_URI);
+logger.info("connecting to url ", mongoUrl.MONGODB_URI);
 
 mongoose.connect(mongoUrl.MONGODB_URI);
 
 mongoose
   .connect(mongoUrl.MONGODB_URI)
   .then(() => {
-    console.log("connected to mongoDB");
+    logger.info("connected to mongoDB");
   })
   .catch((error) => {
-    console.log("error connecting to mongoDB: ", error.message);
+    logger.info("error connecting to mongoDB: ", error.message);
   });
 
 //console of api
