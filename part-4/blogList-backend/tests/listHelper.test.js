@@ -78,12 +78,20 @@ describe("favoriteBlog", () => {
     },
   ];
 
-  test.only("when list have multiple Blogs equal the most liked blog", () => {
+  test("when list have multiple Blogs equal the most liked blog", () => {
     const result = listHelper.favoriteBlog(listOfBlogs);
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",
       likes: 12,
+    });
+  });
+
+  test.only("the author who has the largest amount of blogs", () => {
+    const result = listHelper.mostBlogs(listOfBlogs);
+    expect(result).toStrictEqual({
+      author: "Robert C. Martin",
+      blogs: 3,
     });
   });
 });

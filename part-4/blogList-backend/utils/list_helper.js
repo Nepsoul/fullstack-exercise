@@ -31,8 +31,33 @@ const favoriteBlog = (blog) => {
 
   //   return { title: topBlog.title, author: topBlog.author, likes: topBlog.likes };
 };
+
+const mostBlogs = (blogs) => {
+  const blogCount = {};
+  for (const blog of blogs) {
+    const author = blog.author;
+    if (author in blogCount) {
+      blogCount[author]++;
+    } else {
+      blogCount[author] = 1;
+    }
+  }
+  let maxAuthor = null;
+  let maxBlog = 0;
+
+  for (const author in blogCount) {
+    if (blogCount[author] > maxBlog) {
+      maxBlog = blogCount[author];
+      maxAuthor = author;
+    }
+  }
+  return maxAuthor ? { author: maxAuthor, blogs: maxBlog } : null;
+};
+// debugger;
+// console.log(mostBlogs(blogs));
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };
