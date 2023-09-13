@@ -53,11 +53,21 @@ const mostBlogs = (blogs) => {
   }
   return maxAuthor ? { author: maxAuthor, blogs: maxBlog } : null;
 };
-// debugger;
-// console.log(mostBlogs(blogs));
+
+const mostLikes = (blog) => {
+  return blog.reduce(
+    (accumulator, item) => {
+      if (accumulator.likes < item.likes) {
+        return { author: item.author, likes: item.likes };
+      } else return accumulator;
+    },
+    { likes: 0 }
+  );
+};
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };

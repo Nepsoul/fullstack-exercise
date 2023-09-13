@@ -87,11 +87,18 @@ describe("favoriteBlog", () => {
     });
   });
 
-  test.only("the author who has the largest amount of blogs", () => {
+  test("the author who has the largest amount of blogs", () => {
     const result = listHelper.mostBlogs(listOfBlogs);
     expect(result).toStrictEqual({
       author: "Robert C. Martin",
       blogs: 3,
+    });
+  });
+  test("the author, whose blog posts have the largest amount of likes", () => {
+    const result = listHelper.mostLikes(listOfBlogs);
+    expect(result).toStrictEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 12,
     });
   });
 });
