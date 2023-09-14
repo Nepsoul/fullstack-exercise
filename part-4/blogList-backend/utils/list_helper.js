@@ -1,3 +1,5 @@
+const _ = require("lodash"); //import lodash/load the full build
+
 const dummy = (blogs) => {
   let returnVal = 1;
   return returnVal;
@@ -8,17 +10,25 @@ const totalLikes = (blog) => {
 };
 
 const favoriteBlog = (blog) => {
-  let returnBlog = blog.reduce(
-    (acc, item) => {
-      if (acc.likes < item.likes) {
-        return { title: item.title, author: item.author, likes: item.likes };
-      } else {
-        return acc;
-      }
-    },
-    { likes: 0 }
-  );
-  return returnBlog;
+  //========> using lodash library <======
+  let maxLikes = _.maxBy(blog, "likes");
+  if (maxLikes) {
+    return _.pick(maxLikes, ["title", "author", "likes"]);
+  } else return { title: "", author: "", likes: 0 };
+  //================================
+
+  // let returnBlog = blog.reduce(
+  //   (acc, item) => {
+  //     if (acc.likes < item.likes) {
+  //       return { title: item.title, author: item.author, likes: item.likes };
+  //     } else {
+  //       return acc;
+  //     }
+  //   },
+  //   { likes: 0 }
+  // );
+  // return returnBlog;
+  //===========================
 
   //   let topLikes = 0;
   //   let topBlog = {};
@@ -31,38 +41,64 @@ const favoriteBlog = (blog) => {
 
   //   return { title: topBlog.title, author: topBlog.author, likes: topBlog.likes };
 };
-
 const mostBlogs = (blogs) => {
-  const blogCount = {};
-  for (const blog of blogs) {
-    const author = blog.author;
-    if (author in blogCount) {
-      blogCount[author]++;
-    } else {
-      blogCount[author] = 1;
-    }
+  // ======> using lodash library <=======
+  const blogCount = _.countBy(blogs, "author");
+  const maxAuthor = _.maxBy(_.keys(blogCount), (author) => blogCount[author]);
+  if (maxAuthor) {
+    return { author: maxAuthor, blogs: blogCount[maxAuthor] };
+  } else {
+    return null;
   }
-  let maxAuthor = null;
-  let maxBlog = 0;
 
-  for (const author in blogCount) {
-    if (blogCount[author] > maxBlog) {
-      maxBlog = blogCount[author];
-      maxAuthor = author;
-    }
-  }
-  return maxAuthor ? { author: maxAuthor, blogs: maxBlog } : null;
+  //================================
+  // const blogCount = {};
+  // for (const blog of blogs) {
+  //   const author = blog.author;
+  //   if (author in blogCount) {
+  //     blogCount[author]++;
+  //   } else {
+  //     blogCount[author] = 1;
+  //   }
+  // }
+  // let maxAuthor = null;
+  // let maxBlog = 0;
+
+  // for (const author in blogCount) {
+  //   if (blogCount[author] > maxBlog) {
+  //     maxBlog = blogCount[author];
+  //     maxAuthor = author;
+  //   }
+  // }
+  // return maxAuthor ? { author: maxAuthor, blogs: maxBlog } : null;
 };
 
 const mostLikes = (blog) => {
-  return blog.reduce(
-    (accumulator, item) => {
-      if (accumulator.likes < item.likes) {
-        return { author: item.author, likes: item.likes };
-      } else return accumulator;
-    },
-    { likes: 0 }
+  //=======> using lodash library <======
+  const authorLikes = _.groupBy(blog, "author");
+
+  const authorWithMostLikes = _.maxBy(_.keys(authorLikes), (author) =>
+    _.sumBy(authorLikes[author], "likes")
   );
+
+  if (authorWithMostLikes) {
+    return {
+      author: authorWithMostLikes,
+      likes: _.sumBy(authorLikes[authorWithMostLikes], "likes"),
+    };
+  } else {
+    return null;
+  }
+
+  //=============================
+  // return blog.reduce(
+  //   (accumulator, item) => {
+  //     if (accumulator.likes < item.likes) {
+  //       return { author: item.author, likes: item.likes };
+  //     } else return accumulator;
+  //   },
+  //   { likes: 0 }
+  // );
 };
 module.exports = {
   dummy,

@@ -98,7 +98,7 @@ describe("favoriteBlog", () => {
     const result = listHelper.mostLikes(listOfBlogs);
     expect(result).toStrictEqual({
       author: "Edsger W. Dijkstra",
-      likes: 12,
+      likes: 17,
     });
   });
 });
