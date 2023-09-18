@@ -74,55 +74,55 @@ const mostBlogs = (blogs) => {
 };
 
 const mostLikes = (blog) => {
-  //=======> using lodash library <======
-  // const authorLikes = _.groupBy(blog, "author");
+  // =======> using lodash library <======
+  const authorLikes = _.groupBy(blog, "author");
 
-  // const authorWithMostLikes = _.maxBy(_.keys(authorLikes), (author) =>
-  //   _.sumBy(authorLikes[author], "likes")
-  // );
-
-  // if (authorWithMostLikes) {
-  //   return {
-  //     author: authorWithMostLikes,
-  //     likes: _.sumBy(authorLikes[authorWithMostLikes], "likes"),
-  //   };
-  // } else {
-  //   return null;
-  // }
-
-  //=============================
-  const finalResult = blog.reduce(
-    (accumulator, item) => {
-      const authorLikes = accumulator.authorLikes || {};
-
-      if (authorLikes[item.author]) {
-        authorLikes[item.author] += item.likes;
-      } else {
-        authorLikes[item.author] = item.likes;
-      }
-
-      if (
-        !accumulator.maxAuthor ||
-        authorLikes[item.author] > authorLikes[accumulator.maxAuthor]
-      ) {
-        return {
-          authorLikes,
-          maxAuthor: item.author,
-        };
-      }
-
-      return {
-        authorLikes,
-        maxAuthor: accumulator.maxAuthor,
-      };
-    },
-    { authorLikes: {}, maxAuthor: null }
+  const authorWithMostLikes = _.maxBy(_.keys(authorLikes), (author) =>
+    _.sumBy(authorLikes[author], "likes")
   );
 
-  return {
-    author: finalResult.maxAuthor,
-    likes: finalResult.authorLikes[finalResult.maxAuthor],
-  };
+  if (authorWithMostLikes) {
+    return {
+      author: authorWithMostLikes,
+      likes: _.sumBy(authorLikes[authorWithMostLikes], "likes"),
+    };
+  } else {
+    return null;
+  }
+
+  //=============================
+  // const finalResult = blog.reduce(
+  //   (accumulator, item) => {
+  //     const authorLikes = accumulator.authorLikes || {};
+
+  //     if (authorLikes[item.author]) {
+  //       authorLikes[item.author] += item.likes;
+  //     } else {
+  //       authorLikes[item.author] = item.likes;
+  //     }
+
+  //     if (
+  //       !accumulator.maxAuthor ||
+  //       authorLikes[item.author] > authorLikes[accumulator.maxAuthor]
+  //     ) {
+  //       return {
+  //         authorLikes,
+  //         maxAuthor: item.author,
+  //       };
+  //     }
+
+  //     return {
+  //       authorLikes,
+  //       maxAuthor: accumulator.maxAuthor,
+  //     };
+  //   },
+  //   { authorLikes: {}, maxAuthor: null }
+  // );
+
+  // return {
+  //   author: finalResult.maxAuthor,
+  //   likes: finalResult.authorLikes[finalResult.maxAuthor],
+  // };
 };
 module.exports = {
   dummy,
