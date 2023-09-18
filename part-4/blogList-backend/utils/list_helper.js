@@ -11,23 +11,23 @@ const totalLikes = (blog) => {
 
 const favoriteBlog = (blog) => {
   //========> using lodash library <======
-  let maxLikes = _.maxBy(blog, "likes");
-  if (maxLikes) {
-    return _.pick(maxLikes, ["title", "author", "likes"]);
-  } else return { title: "", author: "", likes: 0 };
+  // let maxLikes = _.maxBy(blog, "likes");
+  // if (maxLikes) {
+  //   return _.pick(maxLikes, ["title", "author", "likes"]);
+  // } else return { title: "", author: "", likes: 0 };
   //================================
 
-  // let returnBlog = blog.reduce(
-  //   (acc, item) => {
-  //     if (acc.likes < item.likes) {
-  //       return { title: item.title, author: item.author, likes: item.likes };
-  //     } else {
-  //       return acc;
-  //     }
-  //   },
-  //   { likes: 0 }
-  // );
-  // return returnBlog;
+  let returnBlog = blog.reduce(
+    (acc, item) => {
+      if (acc.likes < item.likes) {
+        return { title: item.title, author: item.author, likes: item.likes };
+      } else {
+        return acc;
+      }
+    },
+    { likes: 0 }
+  );
+  return returnBlog;
   //===========================
 
   //   let topLikes = 0;
@@ -75,30 +75,54 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blog) => {
   //=======> using lodash library <======
-  const authorLikes = _.groupBy(blog, "author");
+  // const authorLikes = _.groupBy(blog, "author");
 
-  const authorWithMostLikes = _.maxBy(_.keys(authorLikes), (author) =>
-    _.sumBy(authorLikes[author], "likes")
-  );
+  // const authorWithMostLikes = _.maxBy(_.keys(authorLikes), (author) =>
+  //   _.sumBy(authorLikes[author], "likes")
+  // );
 
-  if (authorWithMostLikes) {
-    return {
-      author: authorWithMostLikes,
-      likes: _.sumBy(authorLikes[authorWithMostLikes], "likes"),
-    };
-  } else {
-    return null;
-  }
+  // if (authorWithMostLikes) {
+  //   return {
+  //     author: authorWithMostLikes,
+  //     likes: _.sumBy(authorLikes[authorWithMostLikes], "likes"),
+  //   };
+  // } else {
+  //   return null;
+  // }
 
   //=============================
-  // return blog.reduce(
-  //   (accumulator, item) => {
-  //     if (accumulator.likes < item.likes) {
-  //       return { author: item.author, likes: item.likes };
-  //     } else return accumulator;
-  //   },
-  //   { likes: 0 }
-  // );
+  const finalResult = blog.reduce(
+    (accumulator, item) => {
+      const authorLikes = accumulator.authorLikes || {};
+
+      if (authorLikes[item.author]) {
+        authorLikes[item.author] += item.likes;
+      } else {
+        authorLikes[item.author] = item.likes;
+      }
+
+      if (
+        !accumulator.maxAuthor ||
+        authorLikes[item.author] > authorLikes[accumulator.maxAuthor]
+      ) {
+        return {
+          authorLikes,
+          maxAuthor: item.author,
+        };
+      }
+
+      return {
+        authorLikes,
+        maxAuthor: accumulator.maxAuthor,
+      };
+    },
+    { authorLikes: {}, maxAuthor: null }
+  );
+
+  return {
+    author: finalResult.maxAuthor,
+    likes: finalResult.authorLikes[finalResult.maxAuthor],
+  };
 };
 module.exports = {
   dummy,
