@@ -94,7 +94,7 @@ describe("favoriteBlog", () => {
       blogs: 3,
     });
   });
-  test.only("the author, whose blog posts have the largest amount of likes", () => {
+  test("the author, whose blog posts have the largest amount of likes", () => {
     const result = listHelper.mostLikes(listOfBlogs);
     expect(result).toStrictEqual({
       author: "Edsger W. Dijkstra",
