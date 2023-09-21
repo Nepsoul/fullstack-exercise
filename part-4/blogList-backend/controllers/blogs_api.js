@@ -10,7 +10,7 @@ blogsRouter.get("/", async (req, res) => {
   // });
 });
 
-blogsRouter.get("/:id", async (req, res) => {
+blogsRouter.get("/:id", (req, res) => {
   Blog.findById(req.params.id).then((blog) => {
     if (blog) {
       res.json(blog);
