@@ -23,22 +23,26 @@ blogsRouter.get("/:id", (req, res) => {
   });
 });
 
-blogsRouter.post("/", async (req, res) => {
-  const blog = new Blog(req.body);
-  if (blog.likes === undefined) {
-    blog.likes = 0;
-  }
-  // if (!blog.likes) {
-  //   blog.likes = 0;
-  // }
-  const savedBlog = await blog.save();
-  res.status(201).json(savedBlog);
+blogsRouter.post("/", async (req, res, next) => {
+  try {
+    const blog = new Blog(req.body);
+    if (blog.likes === undefined) {
+      blog.likes = 0;
+    }
+    // if (!blog.likes) {
+    //   blog.likes = 0;
+    // }
+    const savedBlog = await blog.save();
+    res.status(201).json(savedBlog);
 
-  // const blog = new Blog(req.body);
-  // console.log(blog, "blog");
-  // blog.save().then((result) => {
-  //   res.status(201).json(result);
-  // });
+    // const blog = new Blog(req.body);
+    // console.log(blog, "blog");
+    // blog.save().then((result) => {
+    //   res.status(201).json(result);
+    // });}
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = blogsRouter;

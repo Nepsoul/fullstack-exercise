@@ -1,5 +1,4 @@
 const { info, errorLog } = require("./logger");
-// console.log(logger, "error from middleware");
 const requestLogger = (request, response, next) => {
   info("Method:", request.method);
   info("Path:  ", request.path);

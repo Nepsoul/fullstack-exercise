@@ -27,7 +27,7 @@ mongoose
     logger.info("connected to mongoDB");
   })
   .catch((error) => {
-    logger.info("error connecting to mongoDB: ", error.message);
+    logger.error("error connecting to mongoDB: ", error.message);
   });
 
 //console of api
