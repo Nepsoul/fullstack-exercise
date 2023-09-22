@@ -10,6 +10,6 @@ content-type: application/json
 {
     "title":"blog",
     "author":"test",
-    "url":"http://url.com",
-    "likes":"30"
+    "url":"http://url.com"
+    
 }
