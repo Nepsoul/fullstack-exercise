@@ -23,12 +23,16 @@ blogsRouter.get("/:id", (req, res) => {
   });
 });
 
-blogsRouter.post("/", (req, res) => {
+blogsRouter.post("/", async (req, res) => {
   const blog = new Blog(req.body);
-  console.log(blog, "blog");
-  blog.save().then((result) => {
-    res.status(201).json(result);
-  });
+  const savedBlog = await blog.save();
+  res.status(201).json(savedBlog);
+
+  // const blog = new Blog(req.body);
+  // console.log(blog, "blog");
+  // blog.save().then((result) => {
+  //   res.status(201).json(result);
+  // });
 });
 
 module.exports = blogsRouter;
