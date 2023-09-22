@@ -4,10 +4,10 @@ const info = (...params) => {
   }
 };
 
-const error = (...params) => {
+const errorLog = (...params) => {
   if (process.env.NODE_ENV !== "test") {
     console.error(...params);
   }
 };
 
-module.exports = { info, error };
+module.exports = { info, errorLog };
