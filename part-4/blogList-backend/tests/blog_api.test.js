@@ -59,7 +59,7 @@ test("creating a new blog post", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body).toHaveLength(initialBlogs.length + 1);
 });
-test.only("test for like property is missing from the request, return default value 0", async () => {
+test("test for like property is missing from the request, return default value 0", async () => {
   const newBlog = {
     title: "test for missing like property",
     author: "tester",
@@ -79,6 +79,13 @@ test.only("test for like property is missing from the request, return default va
   //   const response = await api.get("/api/blogs");
   //   const missLike = response.body.map((data) => data.likes);
   //   expect(missLike[2]).toBe(0);
+});
+test.only("throw status code 400 bad request, if title or url property missing", async () => {
+  const newBlog = {
+    author: "tester",
+    likes: 44,
+  };
+  await api.post("/api/blogs").send(newBlog).expect(400);
 });
 afterAll(async () => {
   await mongoose.connection.close();

@@ -32,6 +32,9 @@ blogsRouter.post("/", async (req, res, next) => {
     // if (!blog.likes) {
     //   blog.likes = 0;
     // }
+    if (!blog.title || !blog.url) {
+      res.status(400).json({ error: "missing property" }).end();
+    }
     const savedBlog = await blog.save();
     res.status(201).json(savedBlog);
 
