@@ -3,24 +3,26 @@ const Blog = require("../models/blog");
 
 blogsRouter.get("/", async (req, res) => {
   const myBlog = await Blog.find({});
-  res.json(myBlog);
+  res.json(myBlog).end();
   // Blog.find({}).then((blogs) => {
   //   console.log(blogs, "blogs");
   //   res.json(blogs);
   // });
 });
 
-blogsRouter.get("/:id", (req, res) => {
-  Blog.findById(req.params.id).then((blog) => {
-    if (blog) {
-      res.json(blog);
-    } else {
-      res.status(404).json({
-        error: 404,
-        message: `There is no blog with id ` + req.params.id,
-      });
-    }
-  });
+blogsRouter.get("/:id", (req, res, next) => {
+  Blog.findById(req.params.id)
+    .then((blog) => {
+      if (blog) {
+        res.json(blog);
+      } else {
+        res.status(404).json({
+          error: 404,
+          message: `There is no blog with id ` + req.params.id,
+        });
+      }
+    })
+    .catch((error) => next(error));
 });
 
 blogsRouter.post("/", async (req, res, next) => {
@@ -48,4 +50,11 @@ blogsRouter.post("/", async (req, res, next) => {
   }
 });
 
+blogsRouter.delete("/:id", (req, res, next) => {
+  Blog.findByIdAndRemove(req.params.id)
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch((error) => next(error));
+});
 module.exports = blogsRouter;
