@@ -1,33 +1,26 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
-
+const helper = require("./test_helper");
 const api = supertest(app);
 
 const Blog = require("../models/blog");
 
-const initialBlogs = [
-  {
-    title: "Blog testing",
-    author: "bcrypt",
-    url: "http://testing.com",
-    likes: 24,
-  },
-  {
-    title: "supertest",
-    author: "mongoose",
-    url: "http://test.com",
-    likes: 40,
-  },
-];
-
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlogs[1]);
-  await blogObject.save();
+  // let blogObject = new Blog(helper.initialBlogs[0]);
+  // await blogObject.save();
+  // blogObject = new Blog(helper.initialBlogs[1]);
+  // await blogObject.save();
+  helper.initialBlogs.forEach(async (blog) => {
+    let blogObject = new Blog(blog);
+    await blogObject.save();
+    console.log("saved");
+  });
+  console.log("done");
 });
+
+//integration testing
 
 test("blogs are returned as json", async () => {
   await api
@@ -56,8 +49,10 @@ test("creating a new blog post", async () => {
     .send(newBlog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
-  const response = await api.get("/api/blogs");
-  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  const response = await helper.blogsInDb();
+  expect(response).toHaveLength(helper.initialBlogs.length + 1);
+  const author = response.map((blog) => blog.author);
+  expect(author).toContain("tester");
 });
 
 test("test for like property is missing from the request, return default value 0", async () => {
@@ -90,14 +85,16 @@ test("throw status code 400 bad request, if title or url property missing", asyn
   await api.post("/api/blogs").send(newBlog).expect(400);
 });
 
-test.only("test for deleting a single blog post", async () => {
-  const response = await api.get("/api/blogs/");
-  await api.delete(`/api/blogs/${response.body[0].id}`).expect(204);
+test("test for deleting a single blog post", async () => {
+  const response = await helper.blogsInDb();
+  const blogToDelete = response[0];
 
-  const finalResponse = await api.get("/api/blogs");
-  expect(finalResponse.body).toHaveLength(initialBlogs.length - 1);
-  const remainBlog = finalResponse.body.map((data) => data.author);
-  expect(remainBlog).not.toContain("bcrypt");
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const finalResponse = await helper.blogsInDb();
+  expect(finalResponse).toHaveLength(helper.initialBlogs.length - 1);
+  const remainBlog = finalResponse.map((data) => data.author);
+  expect(remainBlog).not.toContain(blogToDelete.author);
 });
 
 afterAll(async () => {
