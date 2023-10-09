@@ -1,28 +1,32 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 
-blogsRouter.get("/", async (req, res) => {
-  const myBlog = await Blog.find({});
-  res.json(myBlog).end();
-  // Blog.find({}).then((blogs) => {
-  //   console.log(blogs, "blogs");
-  //   res.json(blogs);
-  // });
+blogsRouter.get("/", async (req, res, next) => {
+  try {
+    const myBlog = await Blog.find({});
+    res.json(myBlog).end();
+    // Blog.find({}).then((blogs) => {
+    //   console.log(blogs, "blogs");
+    //   res.json(blogs);
+    // });
+  } catch (error) {
+    next(error);
+  }
 });
 
-blogsRouter.get("/:id", (req, res, next) => {
-  Blog.findById(req.params.id)
-    .then((blog) => {
-      if (blog) {
-        res.json(blog);
-      } else {
-        res.status(404).json({
-          error: 404,
-          message: `There is no blog with id ` + req.params.id,
-        });
-      }
-    })
-    .catch((error) => next(error));
+blogsRouter.get("/:id", async (req, res, next) => {
+  try {
+    let blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      res.status(404).json({
+        error: 404,
+        message: `There is no blog with id ` + req.params.id,
+      });
+    }
+    res.json(blog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 blogsRouter.post("/", async (req, res, next) => {
@@ -51,8 +55,12 @@ blogsRouter.post("/", async (req, res, next) => {
 });
 
 blogsRouter.delete("/:id", async (req, res, next) => {
-  await Blog.findByIdAndRemove(req.params.id);
-  res.status(204).end();
+  try {
+    await Blog.findByIdAndRemove(req.params.id);
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
 });
 
 blogsRouter.put("/:id", async (req, res, next) => {
