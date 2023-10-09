@@ -12,12 +12,17 @@ beforeEach(async () => {
   // await blogObject.save();
   // blogObject = new Blog(helper.initialBlogs[1]);
   // await blogObject.save();
-  helper.initialBlogs.forEach(async (blog) => {
-    let blogObject = new Blog(blog);
-    await blogObject.save();
-    console.log("saved");
-  });
-  console.log("done");
+  //================================
+  // helper.initialBlogs.forEach(async (blog) => {
+  //   let blogObject = new Blog(blog);
+  //   await blogObject.save();
+  //   console.log("saved");
+  // });
+  // console.log("done");
+  //========================================
+  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
+  const promiseArray = blogObjects.map((blog) => blog.save());
+  await Promise.all(promiseArray);
 });
 
 //integration testing
@@ -95,6 +100,21 @@ test("test for deleting a single blog post", async () => {
   expect(finalResponse).toHaveLength(helper.initialBlogs.length - 1);
   const remainBlog = finalResponse.map((data) => data.author);
   expect(remainBlog).not.toContain(blogToDelete.author);
+});
+
+test("test for updating number of likes for a blog post", async () => {
+  const toUpdateBlog = await helper.blogsInDb();
+
+  const updatedLike = {
+    likes: 50,
+  };
+
+  await api
+    .put(`/api/blogs/${toUpdateBlog[0].id}`)
+    .send(updatedLike)
+    .expect(200);
+  const updatedLikedBlog = await helper.blogsInDb();
+  expect(updatedLikedBlog[0].likes).toBe(50);
 });
 
 afterAll(async () => {
