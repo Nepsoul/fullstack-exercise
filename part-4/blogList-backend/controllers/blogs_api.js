@@ -55,12 +55,19 @@ blogsRouter.delete("/:id", async (req, res, next) => {
   res.status(204).end();
 });
 
-blogsRouter.put("/:id", async (req, res) => {
-  await Blog.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
-    .then((updatedBlog) => res.json(updatedBlog))
-    .catch((error) => next(error));
+blogsRouter.put("/:id", async (req, res, next) => {
+  try {
+    const toUpdateBlog = await Blog.findById(req.params.id);
+    if (!toUpdateBlog) {
+      res.status(404).json({ error: "this is does not exist" });
+    }
+    const updatedBlog = await Blog.findByIdAndUpdate(toUpdateBlog, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedBlog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = blogsRouter;
