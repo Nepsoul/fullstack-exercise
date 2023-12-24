@@ -10,16 +10,27 @@ content-type: application/json
 {
     "title":"test",
     "url":"test.com",
-    "likes":0
+    "likes":"4"
  
 }
 ###
-DELETE http://localhost:3003/api/blogs/650d465746c2cbccd84264c3
+DELETE http://localhost:3003/api/blogs/650d52ecf01139576487bb5b
 
 ###
-PUT http://localhost:3003/api/blogs/650d466c46c2cbccd84264c6
+PUT http://localhost:3003/api/blogs/650d466c46c2cbccd84264c5
 content-type: application/json
 
 {
-    "likes":23
+    "likes":2
+}
+
+###
+POST http://localhost:3003/api/users
+content-type: application/json
+
+{
+    "username":"token-test1",
+    "name":"token",
+    "password":"password"
+ 
 }

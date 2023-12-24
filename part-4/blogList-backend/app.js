@@ -14,6 +14,8 @@ const mongoose = require("mongoose");
 
 const blogController = require("./controllers/blogs_api");
 
+const userController = require("./controllers/users_api");
+
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
 
 mongoose.set("strictQuery", false);
@@ -35,7 +37,9 @@ app.use(requestLogger);
 
 app.use("/api/blogs", blogController);
 
-//handle error if given absolut url is wrong
+app.use("/api/users", userController);
+
+//handle error if given absolute url is wrong
 app.use(noHandler);
 
 // handler of requests with unknown endpoint

@@ -39,7 +39,7 @@ blogsRouter.post("/", async (req, res, next) => {
     //   blog.likes = 0;
     // }
     if (!blog.title || !blog.url) {
-      res.status(400).json({ error: "missing property" }).end();
+      res.status(400).json({ error: "missing property" }).end(); //error handled by api
     }
     const savedBlog = await blog.save();
     res.status(201).json(savedBlog);
@@ -67,7 +67,7 @@ blogsRouter.put("/:id", async (req, res, next) => {
   try {
     const toUpdateBlog = await Blog.findById(req.params.id);
     if (!toUpdateBlog) {
-      res.status(404).json({ error: "this is does not exist" });
+      res.status(404).json({ error: "this blog does not exist" });
     }
     const updatedBlog = await Blog.findByIdAndUpdate(toUpdateBlog, req.body, {
       new: true,
