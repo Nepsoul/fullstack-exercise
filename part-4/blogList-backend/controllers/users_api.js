@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs"); //bcryptjs faster and optimized
 const usersRouter = require("express").Router();
 
 const User = require("../models/user");
@@ -19,10 +19,10 @@ usersRouter.post("/", async (req, res, next) => {
         .send("Username and password must be greater than 3 character");
     }
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ error: "Username must be unique" });
-    }
+    // const existingUser = await User.findOne({ username }); //validation handle from mongoose
+    // if (existingUser) {
+    //   return res.status(400).json({ error: "Username must be unique" });
+    // }
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds); //one-way hash
