@@ -2,9 +2,17 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: {
+    type: String,
+    required: [true, "Please provide the username"],
+    minLength: [3, "Username too short"],
+    unique: [true, "This username is already in use"],
+  },
   name: String,
-  passwordHash: String,
+  passwordHash: {
+    type: String,
+    required: [true, "Please provide the password"],
+  },
   blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }], //using reference id
 });
 

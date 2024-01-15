@@ -32,8 +32,7 @@ POST http://localhost:3003/api/users
 content-type: application/json
 
 {
-    "username":"sip",
-    "name":"token",
-    "password":"pal"
- 
+    "username":"test",
+    "name":"test",
+    "password":"test"
 }

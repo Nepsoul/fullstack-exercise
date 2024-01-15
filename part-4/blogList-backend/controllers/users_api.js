@@ -7,16 +7,14 @@ usersRouter.post("/", async (req, res, next) => {
   const { username, name, password } = req.body;
 
   try {
-    if (!username || !password) {
-      return res
-        .status(400)
-        .send("Both username and password must be provided");
-    }
+    // if (!username || !password) {  //validation handle by mongoose
+    //   return res
+    //     .status(400)
+    //     .send("Both username and password must be provided");
+    // }
 
-    if (username.length < 3 || password.length < 3) {
-      return res
-        .status(400)
-        .send("Username and password must be greater than 3 character");
+    if (password.length < 3) {
+      return res.status(400).send("Password must be greater than 3 character");
     }
 
     // const existingUser = await User.findOne({ username }); //validation handle from mongoose
