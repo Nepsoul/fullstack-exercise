@@ -8,11 +8,14 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title":"test",
+    "title":"another blog post after implementing the populate",
+    "author":"random",
     "url":"test.com",
-    "likes":"4"
+    "likes":"4",
+    "userId":"65a4f2420db0b1174f6787c0"
  
 }
+
 ###
 DELETE http://localhost:3003/api/blogs/650d52ecf01139576487bb5b
 
