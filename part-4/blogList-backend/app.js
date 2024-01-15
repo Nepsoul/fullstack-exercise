@@ -16,6 +16,8 @@ const blogController = require("./controllers/blogs_api");
 
 const userController = require("./controllers/users_api");
 
+const loginRouter = require("./controllers/login");
+
 app.use(express.json()); //json-parser (note: without parser, req.body of post api is undefined)
 
 mongoose.set("strictQuery", false);
@@ -38,6 +40,8 @@ app.use(requestLogger);
 app.use("/api/blogs", blogController);
 
 app.use("/api/users", userController);
+
+app.use("/api/login", loginRouter);
 
 //handle error if given absolute url is wrong
 app.use(noHandler);
