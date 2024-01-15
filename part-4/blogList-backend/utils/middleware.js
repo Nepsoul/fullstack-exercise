@@ -29,6 +29,8 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === "MongoServerError" && error.code === 11000) {
     //worked after using try/catch in controller
     return response.status(400).json({ error: error.message });
+  } else if (error.name === "JsonWebTokenError") {
+    return response.status(401).json({ error: error.message });
   }
   next(error);
 };
