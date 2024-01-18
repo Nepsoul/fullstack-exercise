@@ -2,13 +2,7 @@ const express = require("express");
 const app = express();
 const mongoUrl = require("./utils/config");
 const logger = require("./utils/logger");
-
-const {
-  unknownEndpoint,
-  errorHandler,
-  noHandler,
-  requestLogger,
-} = require("./utils/middleware");
+const middleware = require("./utils/middleware");
 
 const mongoose = require("mongoose");
 
@@ -35,7 +29,8 @@ mongoose
   });
 
 //console of api
-app.use(requestLogger);
+app.use(middleware.requestLogger);
+app.use(middleware.tokenExtractor);
 
 app.use("/api/blogs", blogController);
 
@@ -44,12 +39,12 @@ app.use("/api/users", userController);
 app.use("/api/login", loginRouter);
 
 //handle error if given absolute url is wrong
-app.use(noHandler);
+// app.use(middleware.noHandler);
 
 // handler of requests with unknown endpoint
-app.use(unknownEndpoint);
+// app.use(middleware.unknownEndpoint);
 
 // this has to be the last loaded middleware.
-app.use(errorHandler);
+// app.use(middleware.errorHandler);
 
 module.exports = app;
