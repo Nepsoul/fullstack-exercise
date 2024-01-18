@@ -7,6 +7,18 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+const tokenExtractor = (req, res, next) => {
+  // console.log("the error", error);
+  const authorization = req.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    req.token = authorization.replace("Bearer ", "");
+    // req.token = authorization.substring(7);
+    // return next();
+  }
+  // req.token = null;
+  next();
+};
+
 //handle error if given absolut url is wrong
 const noHandler = (request, response) => {
   response.status(404).send("<h1>No routes found for this request</h1>");
@@ -40,4 +52,5 @@ module.exports = {
   unknownEndpoint,
   noHandler,
   errorHandler,
+  tokenExtractor,
 };
