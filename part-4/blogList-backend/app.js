@@ -38,13 +38,13 @@ app.use("/api/users", userController);
 
 app.use("/api/login", loginRouter);
 
-//handle error if given absolute url is wrong
-// app.use(middleware.noHandler);
+// handle error if given absolute url is wrong
+app.use(middleware.noHandler);
 
 // handler of requests with unknown endpoint
-// app.use(middleware.unknownEndpoint);
+app.use(middleware.unknownEndpoint);
 
 // this has to be the last loaded middleware.
-// app.use(middleware.errorHandler);
+app.use(middleware.errorHandler);
 
 module.exports = app;
