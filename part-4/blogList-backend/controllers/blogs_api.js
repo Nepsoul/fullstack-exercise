@@ -1,7 +1,8 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
+const { userExtractor } = require("../utils/middleware");
 
 // const getTokenFrom = (request) => {
 //   console.log(request, "request form getTokenFrom function");
@@ -43,16 +44,16 @@ blogsRouter.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-blogsRouter.post("/", async (req, res, next) => {
+blogsRouter.post("/", userExtractor, async (req, res, next) => {
   try {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET);
-    if (!decodedToken.id) {
-      return res.status(401).json({ error: "token invalid" });
-    }
+    // const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    // if (!decodedToken.id) {
+    //   return res.status(401).json({ error: "token invalid" });
+    // }
 
-    const user = await User.findById(decodedToken.id);
-
-    const addedBlog = { ...req.body, user: user.id };
+    // get user from request object
+    const user = await User.findById(req.user.id);
+    const addedBlog = { ...req.body, user: user._id };
     const blog = new Blog(addedBlog);
 
     if (blog.likes === undefined) {
@@ -91,14 +92,14 @@ blogsRouter.post("/", async (req, res, next) => {
   }
 });
 
-blogsRouter.delete("/:id", async (req, res, next) => {
+blogsRouter.delete("/:id", userExtractor, async (req, res, next) => {
   try {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET);
-    if (!decodedToken.id) {
-      return res.status(401).json({ error: "token missing or invalid" });
-    }
+    // const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    // if (!decodedToken.id) {
+    //   return res.status(401).json({ error: "token missing or invalid" });
+    // }
 
-    const user = await User.findById(decodedToken.id);
+    const user = await User.findById(req.user.id);
     const blog = await Blog.findById(req.params.id);
 
     if (!blog) {
@@ -109,7 +110,7 @@ blogsRouter.delete("/:id", async (req, res, next) => {
       await Blog.findByIdAndRemove(req.params.id);
       res.status(204).end();
     } else {
-      res.status(401).json({ message: "permission not granted" });
+      res.status(401).json({ message: "access denied" });
     }
   } catch (error) {
     next(error);

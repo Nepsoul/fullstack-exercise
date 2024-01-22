@@ -30,8 +30,12 @@ mongoose
 
 //console of api
 app.use(middleware.requestLogger);
-app.use(middleware.tokenExtractor);
+// use the middleware in all routes
+app.use(middleware.tokenExtractor); //register middleware for refactor token
+// app.use(middleware.userExtractor);
 
+// use the middleware only in /api/blogs routes
+// app.use("/api/blogs", middleware.userExtractor, blogController); //it creates problem, it makes necessarily provide token to every api when hit
 app.use("/api/blogs", blogController);
 
 app.use("/api/users", userController);
