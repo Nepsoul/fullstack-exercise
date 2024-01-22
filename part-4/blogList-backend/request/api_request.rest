@@ -6,7 +6,7 @@ GET http://localhost:3003/api/blogs/650d489b3ec6489e7aeaaadf
 ###
 POST http://localhost:3003/api/blogs
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1YTRmMjQyMGRiMGIxMTc0ZjY3ODdjMCIsImlhdCI6MTcwNTU2ODE5NX0.YLZRRH928Or7O0JjocO693M_p0pSl2LgKeXR4acNHm0
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNheXVrIiwiaWQiOiI2NWFkZmM3NGQ3YTBlODNlZmNjYzg4YTAiLCJpYXQiOjE3MDU5MTIzODV9.HqIL5jLwGPBChAD4sq0dc1X6QIdv3k2XcJSPFoOtpc4
 
 {
     "title":"using token to post only valid user",
@@ -16,7 +16,9 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/650d52ecf01139576487bb5b
+DELETE http://localhost:3003/api/blogs/65ae284fa508a3ea5c66a790
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1YTRmMjQyMGRiMGIxMTc0ZjY3ODdjMCIsImlhdCI6MTcwNTkwNzU3NX0.1cFGxN98O1CYGZwgm5VmJAFVGYNc35XMpAbGEHJ-m9s
+# authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNheXVrIiwiaWQiOiI2NWFkZmM3NGQ3YTBlODNlZmNjYzg4YTAiLCJpYXQiOjE3MDU5MTIyOTN9.dFHHqEF9UDEL_PC62DDcLd1VKtyu32tg9EdDxI8-52M
 
 ###
 PUT http://localhost:3003/api/blogs/650d466c46c2cbccd84264c5

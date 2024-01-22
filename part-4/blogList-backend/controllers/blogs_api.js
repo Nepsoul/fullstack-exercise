@@ -93,8 +93,24 @@ blogsRouter.post("/", async (req, res, next) => {
 
 blogsRouter.delete("/:id", async (req, res, next) => {
   try {
-    await Blog.findByIdAndRemove(req.params.id);
-    res.status(204).end();
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({ error: "blog does not exist" });
+    }
+
+    if (user.id.toString() === blog.user.toString()) {
+      await Blog.findByIdAndRemove(req.params.id);
+      res.status(204).end();
+    } else {
+      res.status(401).json({ message: "permission not granted" });
+    }
   } catch (error) {
     next(error);
   }
