@@ -21,7 +21,6 @@ const tokenExtractor = (req, res, next) => {
 };
 
 const userExtractor = async (req, res, next) => {
-  console.log(req.token, "token form user extracton");
   //code that extracts the user
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
   if (!decodedToken.id) {

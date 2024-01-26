@@ -117,16 +117,54 @@ blogsRouter.delete("/:id", userExtractor, async (req, res, next) => {
   }
 });
 
-blogsRouter.put("/:id", async (req, res, next) => {
+blogsRouter.put("/:id", userExtractor, async (req, res, next) => {
   try {
+    const user = await User.findById(req.user.id); //userExtractor => req.user
+
     const toUpdateBlog = await Blog.findById(req.params.id);
+
     if (!toUpdateBlog) {
       res.status(404).json({ error: "this blog does not exist" });
     }
-    const updatedBlog = await Blog.findByIdAndUpdate(toUpdateBlog, req.body, {
-      new: true,
-    });
-    res.status(200).json(updatedBlog);
+
+    //toString() => it parsed fetched id from database into string
+    if (user.id.toString() === toUpdateBlog.user.toString()) {
+      // const updatedBlogInDB = await Blog.findByIdAndUpdate(
+      //   toUpdateBlog._id,
+      //   req.body,
+      //   {
+      //     new: true,
+      //   }
+      // );
+
+      const newBlog = {
+        title: req.body.title,
+        author: req.body.author,
+        url: req.body.url,
+        likes: req.body.likes,
+      };
+
+      const updatedBlogInDB = await Blog.findByIdAndUpdate(
+        toUpdateBlog._id,
+        newBlog,
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json(updatedBlogInDB);
+    } else {
+      if (req.body.title || req.body.author || req.body.url) {
+        res.status(400).json({ message: "not authorized user to update" });
+      } else {
+        const onlyLikeUpdate = await Blog.findByIdAndUpdate(
+          toUpdateBlog._id,
+          { likes: req.body.likes },
+          { new: true }
+        );
+        res.status(200).json(onlyLikeUpdate);
+      }
+    }
   } catch (error) {
     next(error);
   }
