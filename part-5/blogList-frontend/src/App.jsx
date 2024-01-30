@@ -14,11 +14,23 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON); //parse json into js object
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
       const user = await loginService.login({ username, password });
+
+      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user)); //js object converted into json, due storage are DOMstrings
+      blogService.setToken(user.token);
       setUser(user);
       setUserName("");
       setPassword("");
