@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -45,7 +46,6 @@ const App = () => {
       });
       setTimeout(() => {
         setMessage({ message: null, type: null });
-        // setMessage(null);
       }, 2000);
     } catch (exception) {
       setMessage({
@@ -54,7 +54,6 @@ const App = () => {
       });
       setTimeout(() => {
         setMessage({ message: null, type: null });
-        // setMessage(null);
       }, 2000);
     }
   };
@@ -90,8 +89,7 @@ const App = () => {
       type: "success",
     });
     setTimeout(() => {
-      setMessage({message:null,type:null});
-      // setMessage(null);
+      setMessage({ message: null, type: null });
     }, 2000);
     setUser(null);
   };
@@ -114,14 +112,12 @@ const App = () => {
         type: "success",
       });
       setTimeout(() => {
-        setMessage({message:null,type:null});
-        // setMessage(null);
+        setMessage({ message: null, type: null });
       }, 2000);
     } catch (exception) {
       setMessage({ message: exception.response.data.error, type: "error" });
       setTimeout(() => {
-        setMessage({message:null,type:null});
-        // setMessage(null);
+        setMessage({ message: null, type: null });
       }, 2000);
     }
   };
@@ -161,7 +157,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <div>{message.message}</div>
+      <Notification message={message?.message} type={message?.type} />
       {user === null ? (
         <div>
           <h2>Log in to application</h2>
