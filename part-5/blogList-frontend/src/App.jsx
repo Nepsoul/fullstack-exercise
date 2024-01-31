@@ -15,10 +15,6 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -85,19 +81,11 @@ const App = () => {
     setUser(null);
   };
 
-  const handleBlogCreate = async (event) => {
+  const handleBlogCreate = async (newObject) => {
     try {
-      event.preventDefault();
-      const newBlog = {
-        title,
-        author,
-        url,
-      };
-      const createdBlog = await blogService.create(newBlog);
+      const createdBlog = await blogService.create(newObject);
       setBlogs(blogs.concat(createdBlog));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+
       setMessage({
         message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
         type: "success",
@@ -115,16 +103,8 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel="new note">
-      <BlogForm
-        title={title}
-        author={author}
-        url={url}
-        handleTitleChange={(event) => setTitle(event.target.value)}
-        handleAuthorChange={(event) => setAuthor(event.target.value)}
-        handleUrlChange={(event) => setUrl(event.target.value)}
-        handleBlogCreate={handleBlogCreate}
-        />
-        </Togglable>
+      <BlogForm createBlog={handleBlogCreate} />
+    </Togglable>
   );
 
   return (
@@ -141,9 +121,6 @@ const App = () => {
           {user.name} logged in <button onClick={logOut}>Logout</button>
           <h2>create new</h2>
           {blogForm()}
-          <button type="submit" onClick={handleBlogCreate}>
-            create
-          </button>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
