@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -8,6 +8,8 @@ import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 
 const App = () => {
+  const blogFormRef = useRef(); //useRef is used to persist values across renders without triggering a re-render
+
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState({ message: null, type: null });
 
@@ -86,6 +88,9 @@ const App = () => {
       const createdBlog = await blogService.create(newObject);
       setBlogs(blogs.concat(createdBlog));
 
+      //to access the exposed function from child component
+      blogFormRef.current.toggleVisibility(); //current property assigned to the reference of DOM element or React component
+
       setMessage({
         message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
         type: "success",
@@ -102,7 +107,7 @@ const App = () => {
   };
 
   const blogForm = () => (
-    <Togglable buttonLabel="new note">
+    <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <BlogForm createBlog={handleBlogCreate} />
     </Togglable>
   );
