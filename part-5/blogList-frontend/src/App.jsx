@@ -8,14 +8,14 @@ import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 
 const App = () => {
-  const blogFormRef = useRef(); //useRef is used to persist values across renders without triggering a re-render
-
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState({ message: null, type: null });
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+
+  const blogFormRef = useRef(); //useRef is used to persist values across renders without triggering a re-render
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -112,6 +112,16 @@ const App = () => {
     </Togglable>
   );
 
+  const handleLikes = async (blogToUpdate) => {
+    const response = await blogService.update({
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1,
+    });
+    setBlogs(
+      blogs.map((blog) => (blog.id === blogToUpdate.id ? response : blog))
+    );
+  };
+
   return (
     <div>
       <h2>blogs</h2>
@@ -127,7 +137,7 @@ const App = () => {
           <h2>create new</h2>
           {blogForm()}
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
           ))}
         </div>
       )}
