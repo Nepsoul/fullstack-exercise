@@ -122,7 +122,9 @@ const App = () => {
         blogs.map((blog) => (blog.id === blogToUpdate.id ? response : blog))
       );
       setMessage({
-        message: `${blogToUpdate.user.username} liked the post`,
+        message: `${
+          blogToUpdate.user.username || blogToUpdate.user
+        } liked the post`,
         type: "success",
       });
       setTimeout(() => {
@@ -153,9 +155,11 @@ const App = () => {
           {user.name} logged in <button onClick={logOut}>Logout</button>
           <h2>create new</h2>
           {blogForm()}
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
-          ))}
+          {blogs
+            .sort((a, b) => b.likes - a.likes)
+            .map((blog) => (
+              <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
+            ))}
         </div>
       )}
     </div>
