@@ -122,9 +122,7 @@ const App = () => {
         blogs.map((blog) => (blog.id === blogToUpdate.id ? response : blog))
       );
       setMessage({
-        message: `${
-          blogToUpdate.user.username || blogToUpdate.user
-        } liked the post`,
+        message: `${user.username} liked the post`,
         type: "success",
       });
       setTimeout(() => {
@@ -133,6 +131,33 @@ const App = () => {
     } catch (exception) {
       setMessage({
         message: "unauthorized user try to like the post",
+        type: "error",
+      });
+      setTimeout(() => {
+        setMessage({ message: null, type: null });
+      }, 2000);
+    }
+  };
+
+  const handleRemove = async (blog) => {
+    const notify = window.confirm(
+      `Remove blog "${blog.title}" by "${blog.author}"`
+    );
+    try {
+      if (notify) {
+        await blogService.remove(blog.id);
+        setBlogs(blogs.filter((n) => n.id !== blog.id));
+        setMessage({
+          message: `"${blog.title}" deleted by "${blog.author}"`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setMessage({ message: null, type: null });
+        }, 2000);
+      }
+    } catch (exception) {
+      setMessage({
+        message: `unauthorized "${user.username}" user try to remove "${blog.title}" post`,
         type: "error",
       });
       setTimeout(() => {
@@ -158,7 +183,13 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} handleLikes={handleLikes} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleLikes={handleLikes}
+                handleRemove={handleRemove}
+                authorizedUser={user}
+              />
             ))}
         </div>
       )}
