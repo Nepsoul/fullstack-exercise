@@ -113,13 +113,30 @@ const App = () => {
   );
 
   const handleLikes = async (blogToUpdate) => {
-    const response = await blogService.update({
-      ...blogToUpdate,
-      likes: blogToUpdate.likes + 1,
-    });
-    setBlogs(
-      blogs.map((blog) => (blog.id === blogToUpdate.id ? response : blog))
-    );
+    try {
+      const response = await blogService.update({
+        ...blogToUpdate,
+        likes: blogToUpdate.likes + 1,
+      });
+      setBlogs(
+        blogs.map((blog) => (blog.id === blogToUpdate.id ? response : blog))
+      );
+      setMessage({
+        message: `${blogToUpdate.user.username} liked the post`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setMessage({ message: null, type: null });
+      }, 2000);
+    } catch (exception) {
+      setMessage({
+        message: "unauthorized user try to like the post",
+        type: "error",
+      });
+      setTimeout(() => {
+        setMessage({ message: null, type: null });
+      }, 2000);
+    }
   };
 
   return (
