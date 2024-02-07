@@ -11,24 +11,31 @@ const requestLogger = (request, response, next) => {
 const tokenExtractor = (req, res, next) => {
   //code that extracts the token
   const authorization = req.get("authorization");
-  if (authorization && authorization.startsWith("Bearer ")) {
-    req.token = authorization.replace("Bearer ", "");
-    // req.token = authorization.substring(7);
-    // return next();
+  try {
+    if (authorization && authorization.startsWith("Bearer ")) {
+      req.token = authorization.replace("Bearer ", "");
+      // req.token = authorization.substring(7);
+      // return next();
+    }
+    next();
+  } catch (exception) {
+    // req.token = null;
+    next(exception);
   }
-  // req.token = null;
-  next();
 };
 
 const userExtractor = async (req, res, next) => {
   //code that extracts the user
-  const decodedToken = jwt.verify(req.token, process.env.SECRET);
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: "token invalid" });
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: "token invalid" });
+    }
+    req.user = decodedToken;
+    next();
+  } catch (exception) {
+    next(exception);
   }
-  req.user = decodedToken;
-
-  next();
 };
 
 //handle error if given absolut url is wrong

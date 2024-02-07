@@ -181,6 +181,31 @@ describe("test of blog api implementing token-authentication", () => {
     const updatedLikedBlog = await helper.blogsInDb();
     expect(updatedLikedBlog[2].likes).toBe(50);
   });
+
+  //testing of token
+  test("blog could not be created, if token is not provided", async () => {
+    const newBlog = {
+      title: "test fail, if token not provided",
+      author: "token",
+      url: "token.com",
+      likes: 3,
+    };
+    await api.post("/api/blogs").send(newBlog).expect(401);
+  });
+
+  test("test fail, if invalid token provided", async () => {
+    const newBlog = {
+      title: "test fail, if invalid token provided",
+      author: "token",
+      url: "token.com",
+      likes: 3,
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set({ authorization: `Bearer wrong-token` })
+      .expect(401);
+  });
 });
 
 afterAll(async () => {
