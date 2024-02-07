@@ -18,8 +18,8 @@ const Blog = ({ blog, handleLikes, handleRemove, authorizedUser }) => {
   return (
     <div style={blogStyle}>
       {!showBlogDetail ? (
-        <div>
-          {blog.title}
+        <div className="blog">
+          {blog.title} <br /> {blog.author}
           <button onClick={showToggle}>view</button>
         </div>
       ) : (

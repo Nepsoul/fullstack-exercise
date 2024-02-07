@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"; //use for defining type of props
 
 const LoginForm = ({
   username,
