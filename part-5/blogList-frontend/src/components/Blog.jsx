@@ -20,14 +20,14 @@ const Blog = ({ blog, handleLikes, handleRemove, authorizedUser }) => {
       {!showBlogDetail ? (
         <div className="blog">
           {blog.title} <br /> {blog.author}
-          <button onClick={showToggle}>view</button>
+          <button className="view" onClick={showToggle}>view</button>
         </div>
       ) : (
         <div>
           {blog.title}
           <button onClick={showToggle}>hide</button>
-          <div>{blog.url}</div>
-          <div>
+          <div className="url">{blog.url}</div>
+          <div className="likes">
             likes {blog.likes}{" "}
             <button onClick={() => handleLikes(blog)}>like</button>
           </div>
