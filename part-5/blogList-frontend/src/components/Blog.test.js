@@ -71,7 +71,7 @@ describe("test for blog component", () => {
 
     await user.click(likeButton);
     await user.click(likeButton);
-    screen.debug();
+    // screen.debug();
     expect(mockHandler.mock.calls).toHaveLength(2);
   });
 });
