@@ -42,6 +42,12 @@ app.use("/api/users", userController);
 
 app.use("/api/login", loginRouter);
 
+//setup for cypress test only when testing
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require("./controllers/testing");
+  app.use("/api/testing", testingRouter);
+}
+
 // handle error if given absolute url is wrong
 app.use(middleware.noHandler);
 
