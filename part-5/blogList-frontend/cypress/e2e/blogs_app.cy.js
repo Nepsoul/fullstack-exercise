@@ -23,6 +23,10 @@ describe("Blog app", function () {
       cy.get("#login-button").click();
 
       cy.contains("test logged in");
+
+      cy.get(".success")
+        .should("contain", "Welcome test to the Blog app")
+        .and("have.css", "color", "rgb(0, 128, 0)");
     });
 
     it("fails with wrong credentials", function () {
@@ -32,6 +36,10 @@ describe("Blog app", function () {
       cy.get("#login-button").click();
 
       cy.contains("invalid username or password");
+
+      cy.get(".error")
+        .should("contain", "invalid username or password")
+        .and("have.css", "color", "rgb(165, 42, 42)");
     });
   });
 });
