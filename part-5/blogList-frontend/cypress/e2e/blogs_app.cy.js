@@ -1,14 +1,14 @@
 describe("Blog app", function () {
   beforeEach(function () {
-    cy.request("POST", "http://localhost:3003/api/testing/reset");
+    cy.request("POST", `${Cypress.env("BACKEND")}/testing/reset`);
 
     const user = {
       username: "test",
       name: "test",
       password: "test",
     };
-    cy.request("POST", "http://localhost:3003/api/users", user);
-    cy.visit("http://localhost:5173");
+    cy.request("POST", `${Cypress.env("BACKEND")}/users`, user);
+    cy.visit("");
   });
 
   it("Login form is shown", function () {
@@ -31,8 +31,8 @@ describe("Blog app", function () {
 
     it("fails with wrong credentials", function () {
       cy.contains("log in").click();
-      cy.get("input:first").type("test");
-      cy.get("input:last").type("wrong password");
+      cy.get("#username").type("test");
+      cy.get("#password").type("wrong password");
       cy.get("#login-button").click();
 
       cy.contains("invalid username or password");
@@ -45,10 +45,7 @@ describe("Blog app", function () {
 
   describe("when logged in", function () {
     beforeEach(function () {
-      cy.contains("log in").click();
-      cy.get("#username").type("test");
-      cy.get("#password").type("test");
-      cy.get("#login-button").click();
+      cy.login({ username: "test", password: "test" });
     });
 
     it("A blog can be created", function () {
