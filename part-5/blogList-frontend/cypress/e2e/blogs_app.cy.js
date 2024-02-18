@@ -42,4 +42,23 @@ describe("Blog app", function () {
         .and("have.css", "color", "rgb(165, 42, 42)");
     });
   });
+
+  describe("when logged in", function () {
+    beforeEach(function () {
+      cy.contains("log in").click();
+      cy.get("#username").type("test");
+      cy.get("#password").type("test");
+      cy.get("#login-button").click();
+    });
+
+    it("A blog can be created", function () {
+      cy.contains("create new blog").click();
+      cy.get("#title").type("blog created to test Cypress");
+      cy.get("#author").type("Cypress");
+      cy.get("#url").type("testing.com");
+      cy.get("#create").click();
+      // cy.contains("blog created to test Cypress Cypress");
+      cy.get(".blogList").should("contain", "blog created to test Cypress");
+    });
+  });
 });
