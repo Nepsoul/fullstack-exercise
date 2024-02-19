@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const Blog = ({ blog, handleLikes, handleRemove, authorizedUser }) => {
   const [showBlogDetail, setShowBlogDetail] = useState(false);
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -20,7 +19,9 @@ const Blog = ({ blog, handleLikes, handleRemove, authorizedUser }) => {
       {!showBlogDetail ? (
         <div className="blog">
           {blog.title} <br /> {blog.author}
-          <button className="view" onClick={showToggle}>view</button>
+          <button className="view" onClick={showToggle}>
+            view
+          </button>
         </div>
       ) : (
         <div>
@@ -33,7 +34,8 @@ const Blog = ({ blog, handleLikes, handleRemove, authorizedUser }) => {
           </div>
           <div>{blog.author}</div>
           <div>
-            {blog.user.id === authorizedUser.id || blog.user ? (
+            {blog.user.id === authorizedUser.id ||
+            blog.user === authorizedUser.id ? (
               <button
                 style={{
                   color: "brown",

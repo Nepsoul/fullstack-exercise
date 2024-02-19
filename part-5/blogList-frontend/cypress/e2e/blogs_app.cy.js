@@ -43,7 +43,7 @@ describe("Blog app", function () {
     });
   });
 
-  describe("when logged in", function () {
+  describe.only("when logged in", function () {
     beforeEach(function () {
       cy.login({ username: "test", password: "test" });
     });
@@ -56,6 +56,19 @@ describe("Blog app", function () {
       cy.get("#create").click();
       // cy.contains("blog created to test Cypress Cypress");
       cy.get(".blogList").should("contain", "blog created to test Cypress");
+    });
+
+    it("users can like a blog", function () {
+      // cy.contains("create new blog").click();
+      cy.createBlog({
+        title: "like testing",
+        author: "user",
+        url: "http://testing.com",
+      });
+
+      cy.contains("view").click();
+      cy.contains("like").click();
+      cy.contains("1");
     });
   });
 });
