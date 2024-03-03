@@ -59,7 +59,6 @@ describe("Blog app", function () {
     });
 
     it("users can like a blog", function () {
-      // cy.contains("create new blog").click();
       cy.createBlog({
         title: "like testing",
         author: "user",

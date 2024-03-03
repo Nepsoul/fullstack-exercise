@@ -23,9 +23,10 @@ const update = (updatedBlog) => {
   const config = { headers: { authorization: token } };
   const request = axios.put(
     `${baseUrl}/${updatedBlog.id}`,
-    updatedBlog,
+    { likes: updatedBlog.likes },
     config
   );
+
   return request.then((response) => response.data);
 };
 

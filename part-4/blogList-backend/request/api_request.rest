@@ -16,16 +16,16 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/65ae373be899a10db16253d2
+DELETE http://localhost:3003/api/blogs/65c0aa146e6672c8211f474d
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1YTRmMjQyMGRiMGIxMTc0ZjY3ODdjMCIsImlhdCI6MTcwNTk4MTY1NSwiZXhwIjoxNzA1OTg1MjU1fQ.J0fw0oBjQjHqcizfUMfYIFE5YDuybkuGKR3bRAjGfNM
 
 ###
-PUT http://localhost:3003/api/blogs/65a5048394f2e3fbe93da1bf
+PUT http://localhost:3003/api/blogs/65a5050394f2e3fbe93da1c7
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1YTRmMjQyMGRiMGIxMTc0ZjY3ODdjMCIsImlhdCI6MTcwNjE3OTIyMiwiZXhwIjoxNzA2MTgyODIyfQ.WSYxCq2SxZRI6-jxAuvhXpk4-kcbpjUByCc7KUbS2RY
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1YTRmMjQyMGRiMGIxMTc0ZjY3ODdjMCIsImlhdCI6MTcwOTQ2MTE2OCwiZXhwIjoxNzA5NDY0NzY4fQ.hxsnfiqwIfLPauMCIbPCLTSS_8YJ0LMQLmitQyWE8ZY
 
 { 
-    "likes":0
+    "likes":50
 }
 
 ###
