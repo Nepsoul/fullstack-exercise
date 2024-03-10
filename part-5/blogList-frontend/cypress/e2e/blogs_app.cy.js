@@ -50,7 +50,7 @@ describe("Blog app", function () {
     });
   });
 
-  describe.only("when logged in", function () {
+  describe("when logged in", function () {
     beforeEach(function () {
       cy.login({ username: "test", password: "test" });
     });
@@ -100,6 +100,59 @@ describe("Blog app", function () {
       cy.contains("view").click();
       cy.contains("remove").should("not.exist");
       // cy.contains("del button visible to only owner");
+    });
+
+    describe("according to likes, order the blogs", function () {
+      beforeEach(function () {
+        const firstBlog = {
+          title: "first blog",
+          author: "tester",
+          url: "testing.com",
+        };
+        const secBlog = {
+          title: "second blog",
+          author: "tester",
+          url: "testing.com",
+        };
+        const thirdBlog = {
+          title: "third blog",
+          author: "tester",
+          url: "testing.com",
+        };
+        cy.createBlog(firstBlog);
+        cy.createBlog(secBlog);
+        cy.createBlog(thirdBlog);
+      });
+
+      it("blog with max likes at first", function () {
+        cy.contains("first blog").contains("view").click();
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.contains("hide").click();
+
+        cy.contains("second blog").contains("view").click();
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.contains("hide").click();
+
+        cy.contains("third blog").contains("view").click();
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.wait(500);
+        cy.get(".like").click();
+        cy.contains("hide").click();
+
+        cy.get(".blogList").eq(0).should("contain", "third blog");
+        cy.get(".blogList").eq(1).should("contain", "first blog");
+        cy.get(".blogList").eq(2).should("contain", "second blog");
+      });
     });
   });
 });
