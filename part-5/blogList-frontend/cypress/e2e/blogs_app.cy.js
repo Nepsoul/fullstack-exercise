@@ -69,5 +69,15 @@ describe("Blog app", function () {
       cy.contains("like").click();
       cy.contains("1");
     });
+    it("user who created the blog, only can delete the blog", function () {
+      cy.createBlog({
+        title: "test for delete only by blog's user",
+        author: "user",
+        url: "http://testing.com",
+      });
+      cy.contains("view").click();
+      cy.contains("remove").click();
+      cy.contains("#title").should("not.exist");
+    });
   });
 });
