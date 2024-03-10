@@ -7,7 +7,14 @@ describe("Blog app", function () {
       name: "test",
       password: "test",
     };
+
+    const secUser = {
+      username: "another user",
+      name: "secUser",
+      password: "1234",
+    };
     cy.request("POST", `${Cypress.env("BACKEND")}/users`, user);
+    cy.request("POST", `${Cypress.env("BACKEND")}/users`, secUser);
     cy.visit("");
   });
 
@@ -78,6 +85,21 @@ describe("Blog app", function () {
       cy.contains("view").click();
       cy.contains("remove").click();
       cy.contains("#title").should("not.exist");
+    });
+
+    it("only creator can see the delete button", function () {
+      cy.createBlog({
+        title: "del button visible to only owner",
+        author: "tester",
+        url: "testing.com",
+      });
+      cy.contains("view").click();
+      cy.contains("Logout").click();
+
+      cy.login({ username: "another user", password: "1234" });
+      cy.contains("view").click();
+      cy.contains("remove").should("not.exist");
+      // cy.contains("del button visible to only owner");
     });
   });
 });
