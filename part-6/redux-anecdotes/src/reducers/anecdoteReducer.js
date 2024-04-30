@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
     //action type
     case "VOTING":
       const newVote = state.map((anecdote) => {
-        if (anecdote.id === action.id) {
+        if (anecdote.id === action.payload) {
           return { ...anecdote, votes: anecdote.votes + 1 };
         }
         return anecdote;
@@ -46,7 +46,7 @@ const reducer = (state = initialState, action) => {
 
 //function that create action => action creator
 export const voteHandler = (id) => {
-  return { type: "VOTING", payload: { id } };
+  return { type: "VOTING", payload: id };
 };
 
 export const anecdoteHandler = (content) => {
