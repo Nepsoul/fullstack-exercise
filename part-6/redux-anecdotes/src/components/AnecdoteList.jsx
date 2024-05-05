@@ -5,7 +5,6 @@ const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
   const fiterAnec=useSelector(state=>state.filter)
   const filteredAnec=anecdotes.filter(anecdote=>anecdote.content.toLowerCase().includes(fiterAnec))
-  
   const dispatch = useDispatch();
 
   const vote = (id) => {
@@ -14,8 +13,8 @@ const AnecdoteList = () => {
     dispatch(voteHandler(id));
     // dispatch({ type: "VOTING", id });
   };
-
-  const sortedVotes = filteredAnec.sort((a, b) => (a.votes > b.votes ? -1 : 1));
+//toolkit return immutable state for this use spread operator 
+  const sortedVotes = [...filteredAnec].sort((a, b) => (a.votes > b.votes ? -1 : 1));
 
   return (
     <div>

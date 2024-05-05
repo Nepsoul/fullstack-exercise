@@ -1,19 +1,14 @@
-const filterReducer = (state = "", action) => {
-  switch (action.type) {
-    case "FITER-ANECDOTE":
+import { createSlice } from "@reduxjs/toolkit";
+
+const filterSlice = createSlice({
+  name: "filter",
+  initialState: "",
+  reducers: {
+    filterHandler(state, action) {
       return action.payload;
+    },
+  },
+});
 
-    default:
-      return state;
-  }
-};
-
-//action creator
-export const filterHandler = (filter) => {
-  return {
-    type: "FITER-ANECDOTE",
-    payload: filter,
-  };
-};
-
-export default filterReducer;
+export const { filterHandler } = filterSlice.actions;
+export default filterSlice.reducer;
