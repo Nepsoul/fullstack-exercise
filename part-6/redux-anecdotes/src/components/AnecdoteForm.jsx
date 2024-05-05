@@ -9,7 +9,10 @@ const AnecdoteForm = () => {
     const newAnec = e.target.anecdote.value;
     dispatch(anecdoteHandler(newAnec));
     e.target.anecdote.value = "";
-    dispatch(notificationHandle(newAnec))
+    dispatch(notificationHandle(`'${newAnec}' has been added`))
+    setTimeout((()=>{
+      dispatch(notificationHandle(null))
+    }),5000)
   };
   return (
     <div>
