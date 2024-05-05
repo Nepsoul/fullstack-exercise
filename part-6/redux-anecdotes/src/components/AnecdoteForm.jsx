@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { anecdoteHandler } from "../reducers/anecdoteReducer";
+import { notificationHandle } from "../reducers/notificationReducer";
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
@@ -8,6 +9,7 @@ const AnecdoteForm = () => {
     const newAnec = e.target.anecdote.value;
     dispatch(anecdoteHandler(newAnec));
     e.target.anecdote.value = "";
+    dispatch(notificationHandle(newAnec))
   };
   return (
     <div>
