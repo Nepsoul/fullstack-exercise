@@ -4,8 +4,10 @@ import { notificationHandle } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
-  const fiterAnec=useSelector(state=>state.filter)
-  const filteredAnec=anecdotes.filter(anecdote=>anecdote.content.toLowerCase().includes(fiterAnec))
+  const fiterAnec = useSelector((state) => state.filter);
+  const filteredAnec = anecdotes.filter((anecdote) =>
+    anecdote.content.toLowerCase().includes(fiterAnec)
+  );
   const dispatch = useDispatch();
 
   const vote = (id, content) => {
@@ -13,10 +15,16 @@ const AnecdoteList = () => {
     //trigger action
     dispatch(voteHandler(id));
     // dispatch({ type: "VOTING", id });
-    dispatch(notificationHandle(`You voted "${content}"`,5)) //instead of setTimeout, this can use it
+    dispatch(notificationHandle(`You voted "${content}"`));
+    //to remove notification after 5sec
+    setTimeout(() => {
+      dispatch(notificationHandle(null));
+    }, 5000);
   };
-//toolkit return immutable state for this use spread operator 
-  const sortedVotes = [...filteredAnec].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+  //toolkit return immutable state for this use spread operator
+  const sortedVotes = [...filteredAnec].sort((a, b) =>
+    a.votes > b.votes ? -1 : 1
+  );
 
   return (
     <div>
@@ -25,7 +33,9 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id,anecdote.content)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote.content)}>
+              vote
+            </button>
           </div>
         </div>
       ))}
