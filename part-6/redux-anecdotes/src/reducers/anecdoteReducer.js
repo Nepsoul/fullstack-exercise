@@ -14,11 +14,16 @@ const anecdoteSlice = createSlice({
           : anecdote
       );
     },
-
-    appendAnecdote(state, action) {
-      state.concat(action.payload);
+    anecdoteHandler(state, action) {
+      const content = action.payload;
+      return state.concat(content);
     },
 
+    // appendAnecdote(state, action) {
+    //   return state.concat(action.payload);
+    // },
+
+    //directly replace all content array, action creator
     setAnecdote(state, action) {
       return action.payload;
     },

@@ -3,12 +3,24 @@ import { voteHandler } from "../reducers/anecdoteReducer";
 import { notificationHandle } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
-  const fiterAnec = useSelector((state) => state.filter);
-  const filteredAnec = anecdotes.filter((anecdote) =>
-    anecdote.content.toLowerCase().includes(fiterAnec)
-  );
   const dispatch = useDispatch();
+
+  const filteredAnec = useSelector((state) => {
+    const anecdotes = state.anecdotes;
+    const filter = state.filter;
+    if (filter === "") return anecdotes;
+    return anecdotes.filter(
+      (anecdote) =>
+        anecdote.content.toLowerCase().indexOf(filter.toLowerCase()) > -1
+    );
+  });
+
+  // const anecdotes = useSelector((state) => state.anecdotes);
+  // const fiterAnec = useSelector((state) => state.filter);
+  // const filteredAnec = anecdotes.filter((anecdote) =>
+  //   anecdote.content.toLowerCase().includes(fiterAnec)
+  // );
+  // const dispatch = useDispatch();
 
   const vote = (id, content) => {
     console.log("vote", id);
